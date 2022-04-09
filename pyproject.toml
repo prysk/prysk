@@ -67,7 +67,7 @@ black = "^22.1.0"
 coverage = "^6.3.2"
 isort = "^5.10.1"
 pylint = "^2.13.4"
-Sphinx = "^4.4.0"
+Sphinx = "^4.5.0"
 furo = "^2022.3.4"
 nox = "^2022.1.7"
 
