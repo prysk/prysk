@@ -52,7 +52,7 @@ exclude = [
 ]
 
 [tool.poetry.scripts]
-prysk = "prysk:cli.main"
+prysk = "prysk:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -91,5 +91,5 @@ line-length = 88
 verbose = true
 include = "\\.pyi?$"
 
-[too.isort]
+[tool.isort]
 profile = "black"
