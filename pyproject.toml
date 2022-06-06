@@ -69,7 +69,7 @@ coverage = "^6.4"
 isort = "^5.10.1"
 pylint = "^2.13.9"
 Sphinx = "^4.4.0"
-furo = "^2022.3.4"
+furo = "^2022.6.4"
 nox = "^2022.1.7"
 pre-commit = "^2.19.0"
 
