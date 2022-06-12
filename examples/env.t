@@ -27,4 +27,4 @@ Check environment variables:
   $ echo "$TESTFILE"
   env.t
   $ pwd
-  */prysk-tests*/env.t (glob)
+  */prysk-tests*/env.t/* (glob)

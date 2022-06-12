@@ -1,6 +1,8 @@
 from pathlib import Path
 
-from prysk.test import _findtests, cwd
+import pytest
+
+from prysk.test import TestFile, _findtests, cwd
 
 
 def create_directory(root, name):
@@ -36,3 +38,24 @@ def test_findtests_ignores_folders(tmpdir):
     _ = create_file(hidden_directory, "visible.t", "")
     expected = tuple()
     assert tuple(_findtests([tmpdir])) == expected
+
+
+class TestTestFile:
+    def test_equivalent_test_files_have_the_same_hash(self):
+        test_file1 = TestFile(".", None)
+        test_file2 = TestFile(".", None)
+        assert hash(test_file1) == hash(test_file2)
+
+    @pytest.mark.parametrize(
+        "file_path1, test_dir1, file_path2, test_dir2",
+        [
+            ("/some/file/path", None, "/another/file/path", None),
+            ("/some/file/path", "/tmp", "/some/file/path", None),
+        ],
+    )
+    def test_different_test_files_have_different_hashes(
+        self, file_path1, test_dir1, file_path2, test_dir2
+    ):
+        test_file1 = TestFile(file_path1, test_dir1)
+        test_file2 = TestFile(file_path2, test_dir2)
+        assert hash(test_file1) != hash(test_file2)

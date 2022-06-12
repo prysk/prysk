@@ -15,7 +15,6 @@ from rich.console import Console
 
 from prysk.process import execute
 from prysk.settings import merge_settings, settings_from
-from prysk.test import runtests
 from prysk.xunit import runxunit
 
 VERSION = "0.12.1"
@@ -478,28 +477,28 @@ class _Cli:
 
         os.mkdir(proc_tmp)
         try:
-            tests = runtests(
-                settings.tests,
-                tmpdir,
-                shell,
+
+            test_settings = test.Settings(
+                shell=shell,
                 indent=settings.indent,
-                cleanenv=not settings.preserve_env,
                 debug=settings.debug,
+                clean_environment=not settings.preserve_env,
             )
+            runner = test.LegacyRunner(settings.tests, tmpdir, test_settings)
             if not settings.debug:
-                tests = self._runcli(
-                    tests,
+                runner = self._runcli(
+                    runner,
                     quiet=settings.quiet,
                     verbose=settings.verbose,
                     patchcmd=patchcmd,
                     answer=answer,
                 )
                 if settings.xunit_file is not None:
-                    tests = runxunit(tests, settings.xunit_file)
+                    runner = runxunit(runner, settings.xunit_file)
 
             hastests = False
             failed = False
-            for path, test in tests:
+            for path, test in runner:
                 hastests = True
                 _, _, diff = test()
                 if diff:

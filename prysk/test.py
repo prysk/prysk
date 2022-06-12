@@ -1,11 +1,12 @@
 """Utilities for running individual tests"""
-
 import itertools
 import os
 import re
 import time
 from contextlib import contextmanager
+from dataclasses import dataclass, field
 from pathlib import Path
+from uuid import uuid4
 
 from prysk.diff import esc, glob, regex, unified_diff
 from prysk.process import PIPE, STDOUT, execute
@@ -294,48 +295,66 @@ def testfile(
         )
 
 
-def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
-    """Run tests and yield results.
+class LegacyRunner:
+    def __init__(self, paths, tmpdir, settings):
+        self._paths = paths
+        self._tmpdir = tmpdir
+        self._settings = settings
 
-    This yields a sequence of 2-tuples containing the following:
+    def __iter__(self):
+        def wrapper(t):
+            return lambda: t(self._settings)
 
-        (test path, test function)
+        return ((t.path, wrapper(t)) for t in self._test_files())
 
-    The test function, when called, runs the test in a temporary directory
-    and returns a 3-tuple:
+    def _test_files(self):
+        for path in _findtests(self._paths):
+            yield TestFile(path, self._tmpdir)
 
-        (list of lines in the test, same list with actual output, diff)
-    """
-    basenames, seen = set(), set()
-    tests = _findtests(paths)
-    for i, path in enumerate(tests):
-        abspath = path.resolve()
-        if abspath in seen:
-            continue
-        seen.add(abspath)
 
-        if not path.stat().st_size:
-            yield path, lambda: (None, None, None)
-            continue
+@dataclass(frozen=True)
+class Settings:
+    shell: list
+    indent: int = 2
+    debug: bool = False
+    clean_environment: bool = True
 
-        basename = path.name
-        if basename in basenames:
-            basename = f"{basename}-{i}"
-        else:
-            basenames.add(basename)
 
-        def test():
-            """Run test file"""
-            testdir = tmpdir / basename
-            os.mkdir(testdir)
-            with cwd(testdir):
-                return testfile(
-                    abspath,
-                    shell,
-                    indent=indent,
-                    cleanenv=cleanenv,
-                    debug=debug,
-                    testname=path,
-                )
+class TestFile:
+    def __init__(self, path, tmp_dir):
+        self._file = path
+        self._tmp_dir = tmp_dir
 
-        yield path, test
+    def __call__(self, *args, **kwargs):
+        return self.run(*args, **kwargs)
+
+    def __hash__(self):
+        return hash((self._file, self._tmp_dir))
+
+    @property
+    def path(self):
+        return self._file
+
+    def run(self, settings):
+        """Run tests contained in this file yield result.
+
+        Runs the test in a temporary directory and returns a 3-tuple:
+
+            (list of lines in the test, same list with actual output, diff)
+        """
+        # if test file is empty return an empty result
+        if not self._file.stat().st_size:
+            return None, None, None
+
+        directory = self._tmp_dir / self._file.name / f"{uuid4()}"
+        directory.mkdir(parents=True)
+        abspath = self._file.resolve()
+        with cwd(directory):
+            return testfile(
+                abspath,
+                settings.shell,
+                indent=settings.indent,
+                cleanenv=settings.clean_environment,
+                debug=settings.debug,
+                testname=self._file,
+            )
