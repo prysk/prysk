@@ -1,3 +1,14 @@
+Version 0.12.2 (June. 15, 2022)
+-----------------------------------------------------
+* Fix prysk test file lookup for relative paths
+* Refactor xunit module
+* Refactor test module
+* Remove run module
+* Fix pylint warnings in cli module
+* Fix pylint warnings in run module
+* Fix pylint warnings in process module
+* Refactor _Cli class
+
 Version 0.12.1 (May. 29, 2022)
 -----------------------------------------------------
 * Fix version output of cli
