@@ -3,8 +3,10 @@ import itertools
 import os
 import re
 import time
+from collections.abc import Iterable
 from contextlib import contextmanager
 from dataclasses import dataclass, field
+from inspect import getmembers, ismethod
 from pathlib import Path
 from uuid import uuid4
 
@@ -35,10 +37,10 @@ def _findtests(paths):
 
         def _is_hidden(part):
             return (
-                part.startswith(".")
-                and not part == "."
-                and not part.startswith("..")
-                and not part.startswith("./")
+                    part.startswith(".")
+                    and not part == "."
+                    and not part.startswith("..")
+                    and not part.startswith("./")
             )
 
         return any(map(_is_hidden, path.parts))
@@ -78,13 +80,13 @@ def cwd(path):
 
 
 def test(
-    lines,
-    shell="/bin/sh",
-    indent=2,
-    testname=None,
-    env=None,
-    cleanenv=True,
-    debug=False,
+        lines,
+        shell="/bin/sh",
+        indent=2,
+        testname=None,
+        env=None,
+        cleanenv=True,
+        debug=False,
 ):
     r"""Run test lines and return input, output, and diff.
 
@@ -179,10 +181,10 @@ def test(
             prepos = pos
             pos = i
             stdin.append(b"echo %s %d $?\n" % (salt, i))
-            stdin.append(line[len(cmdline) :])
+            stdin.append(line[len(cmdline):])
         elif line.startswith(conline):
             after.setdefault(prepos, []).append(line)
-            stdin.append(line[len(conline) :])
+            stdin.append(line[len(conline):])
         elif not line.startswith(indent):
             after.setdefault(pos, []).append(line)
     stdin.append(b"echo %s %d $?\n" % (salt, i + 1))
@@ -236,15 +238,16 @@ def _debug(cmdline, conline, env, lines, shell):
         if not line.endswith(b"\n"):
             line += b"\n"
         if line.startswith(cmdline):
-            stdin.append(line[len(cmdline) :])
+            stdin.append(line[len(cmdline):])
         elif line.startswith(conline):
-            stdin.append(line[len(conline) :])
+            stdin.append(line[len(conline):])
     execute(shell + ["-"], stdin=b"".join(stdin), env=env)
     return [], [], []
 
 
 def testfile(
-    path, shell="/bin/sh", indent=2, env=None, cleanenv=True, debug=False, testname=None
+        path, shell="/bin/sh", indent=2, env=None, cleanenv=True, debug=False,
+        testname=None
 ):
     """Run test at path and return input, output, and diff.
 
@@ -358,3 +361,86 @@ class TestFile:
                 debug=settings.debug,
                 testname=self._file,
             )
+
+
+class EventRegistry:
+    def __init__(self, events):
+        self._hooks = {event: [] for event in events}
+
+    @property
+    def events(self):
+        return (event for event in self._hooks)
+
+    def trigger(self, event, *args, **kwargs):
+        """Triggers all hooks of the specified event."""
+        for hook in self._hooks[event]:
+            hook(*args, **kwargs)
+
+    def register(self, plugin):
+        """Registers a complex plugin which need to register for multiple events."""
+        callables = ((name, member) for name, member in getmembers(plugin, ismethod))
+        hooks = {name: member for name, member in callables if name in self._hooks}
+        for event, hook in hooks.items():
+            self[event] = hook
+
+    def __getitem__(self, event):
+        """Returns all listeners registered for a specific event."""
+        return self._hooks[event]
+
+    def __setitem__(self, event, value):
+        """Adds one or multiple listeners for a specific event."""
+        try:
+            hooks = self._hooks[event]
+        except KeyError as ex:
+            raise KeyError(f"Unknown event [{event}]") from ex
+
+        if isinstance(value, Iterable):
+            hooks.extend(value)
+        else:
+            hooks.append(value)
+
+
+class Runner:
+    EVENTS = (
+        "pre-run",
+        "post-run",
+        "pre-test",
+        "post-test",
+        "empty-test",
+        "skipped-test",
+        "succeeded-test",
+        "failed-test",
+    )
+
+    def __int__(self, path, tmpdir, settings):
+        self._event_registry = EventRegistry(self.EVENTS)
+
+    def _test_files(self):
+        for path in _findtests(self._paths):
+            yield TestFile(path, self._tmpdir)
+
+    def _trigger(self, event, *args, **kwargs):
+        self._event_registry.trigger(event, *args, **kwargs)
+
+    def add(self, plugin):
+        self._event_registry.register(plugin)
+
+    def run(self):
+        self._trigger("pre-run")
+        for test in self._test_files():
+            self.execute(test)
+        self._trigger("post-run")
+
+    def execute(self, test):
+        self._trigger("pre-test")
+        refout, postout, diff = test()
+        if refout is None:
+            self._trigger("empty-test")
+        if postout is None:
+            self._trigger("skipped-test")
+        elif not diff:
+            self._trigger("succeeded-test")
+        else:
+            self._trigger("failed-test")
+        self._trigger("post-test")
+

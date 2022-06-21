@@ -477,6 +477,7 @@ class _Cli:
 
         os.mkdir(proc_tmp)
         try:
+            from prysk import test
 
             test_settings = test.Settings(
                 shell=shell,

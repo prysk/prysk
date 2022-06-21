@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from prysk.test import TestFile, _findtests, cwd
+from prysk.test import EventRegistry, TestFile, _findtests, cwd
 
 
 def create_directory(root, name):
@@ -59,3 +59,53 @@ class TestTestFile:
         test_file1 = TestFile(file_path1, test_dir1)
         test_file2 = TestFile(file_path2, test_dir2)
         assert hash(test_file1) != hash(test_file2)
+
+
+class TestEventRegistry:
+    def test_create_registry(self):
+        events = ["on_start", "on_failure", "on_success"]
+        registry = EventRegistry(events)
+        assert list(events) == list(registry.events)
+
+    def test_registering_hook_for_unknown_event_fails(self):
+        events = ["on_start", "on_failure", "on_success"]
+        registry = EventRegistry(events)
+
+        with pytest.raises(KeyError) as execinfo:
+            registry["on_test"] = lambda: "test hook"
+        assert "Unknown event" in f"{execinfo.value}"
+
+    def test_register_a_single_hook(self):
+        hook = lambda: None
+        events = ["on_start"]
+        registry = EventRegistry(events)
+        registry["on_start"] = hook
+
+        assert hook in list(registry["on_start"])
+
+    def test_register_a_multiple_hooks_at_once(self):
+        hooks = [lambda: None, lambda: 1, lambda: 2]
+        events = ["on_start"]
+        registry = EventRegistry(events)
+        registry["on_start"] = hooks
+        expected = set(hooks)
+        actual = set(registry["on_start"])
+
+        assert expected == actual
+
+    def test_register_for_multiple_events_using_a_class_based_listener(self):
+        class Plugin:
+            def on_success(self):
+                pass
+
+            def on_failure(self):
+                pass
+
+        plugin = Plugin()
+        events = ["on_success", "on_failure"]
+        registry = EventRegistry(events)
+        registry.register(plugin)
+
+        assert plugin.on_success in set(
+            registry["on_success"]
+        ) and plugin.on_failure in set(registry["on_failure"])
