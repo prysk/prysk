@@ -97,7 +97,17 @@ def integration(session, shell):
 
 @nox.session(python=False)
 def mypy(session):
-    session.run("poetry", "run", "mypy")
+    session.run(
+        "poetry",
+        "run",
+        "mypy",
+        "--strict",
+        "--show-error-codes",
+        "--pretty",
+        "--show-column-numbers",
+        "--show-error-context",
+        "--scripts-are-modules",
+    )
 
 
 @nox.session(python=False)
