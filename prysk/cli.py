@@ -14,7 +14,10 @@ from shutil import which
 from rich.console import Console
 
 from prysk.process import execute
-from prysk.settings import merge_settings, settings_from
+from prysk.settings import (
+    merge_settings,
+    settings_from,
+)
 from prysk.test import runtests
 from prysk.xunit import runxunit
 
