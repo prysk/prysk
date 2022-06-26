@@ -1,6 +1,9 @@
 from pathlib import Path
 
-from prysk.test import _findtests, cwd
+from prysk.test import (
+    _findtests,
+    cwd,
+)
 
 
 def create_directory(root, name):

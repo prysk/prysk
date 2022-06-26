@@ -2,7 +2,11 @@ import argparse
 
 import pytest
 
-from prysk.settings import Settings, merge_settings, settings_from
+from prysk.settings import (
+    Settings,
+    merge_settings,
+    settings_from,
+)
 
 
 @pytest.mark.parametrize(

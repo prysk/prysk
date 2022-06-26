@@ -96,6 +96,7 @@ include = "\\.pyi?$"
 
 [tool.isort]
 profile = "black"
+force_grid_wrap = 2
 
 [tool.mypy]
 files = [

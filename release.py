@@ -5,7 +5,10 @@ from dataclasses import dataclass
 from datetime import date
 from inspect import cleandoc
 from pathlib import Path
-from subprocess import CalledProcessError, run
+from subprocess import (
+    CalledProcessError,
+    run,
+)
 
 import tomli
 import tomli_w
@@ -108,7 +111,7 @@ def _add_release_notes(release_notes, version, change_log):
         Version {version} ({month}. {day}, {year})
         -----------------------------------------------------
         {change_log}
-        
+
         {old_release_notes}
         """
             ).format(

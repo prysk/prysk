@@ -7,8 +7,17 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 
-from prysk.diff import esc, glob, regex, unified_diff
-from prysk.process import PIPE, STDOUT, execute
+from prysk.diff import (
+    esc,
+    glob,
+    regex,
+    unified_diff,
+)
+from prysk.process import (
+    PIPE,
+    STDOUT,
+    execute,
+)
 
 __all__ = ["test", "testfile", "runtests"]
 

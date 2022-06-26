@@ -3,7 +3,11 @@ from inspect import cleandoc
 
 import pytest
 
-from prysk.cli import _ArgumentParser, _env_args, load
+from prysk.cli import (
+    _ArgumentParser,
+    _env_args,
+    load,
+)
 
 Configuration = namedtuple("Configuration", ("expected", "filename", "content"))
 

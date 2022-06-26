@@ -1,8 +1,14 @@
 """ Cli tool to calculate the md5 checksum for one or multiple files """
 import sys
-from argparse import ArgumentParser, FileType
+from argparse import (
+    ArgumentParser,
+    FileType,
+)
 from hashlib import md5
-from typing import Optional, Sequence
+from typing import (
+    Optional,
+    Sequence,
+)
 
 
 def _create_parser() -> ArgumentParser:
