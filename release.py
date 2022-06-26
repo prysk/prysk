@@ -1,6 +1,6 @@
-import argparse
 import subprocess
 import sys
+from argparse import ArgumentParser
 from dataclasses import dataclass
 from datetime import date
 from inspect import cleandoc
@@ -8,6 +8,10 @@ from pathlib import Path
 from subprocess import (
     CalledProcessError,
     run,
+)
+from typing import (
+    Optional,
+    Sequence,
 )
 
 import tomli
@@ -25,25 +29,25 @@ class Version:
     patch: int
 
     @staticmethod
-    def from_string(version):
+    def from_string(version: str) -> "Version":
         major, minor, patch = (int(part) for part in version.split("."))
         return Version(major=major, minor=minor, patch=patch)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.major}.{self.minor}.{self.patch}"
 
 
-def _pyproject():
+def _pyproject() -> str:
     with open(PY_PROJECT_FILE, "r") as f:
         return f.read()
 
 
-def current_version():
+def current_version() -> Version:
     config = tomli.loads(_pyproject())
     return Version.from_string(config["tool"]["poetry"]["version"])
 
 
-def bump_version(major, minor, patch):
+def bump_version(major: int, minor: int, patch: int) -> Version:
     config = tomli.loads(_pyproject())
     with open(PY_PROJECT_FILE, "wb") as f:
         version = Version(major, minor, patch)
@@ -52,8 +56,8 @@ def bump_version(major, minor, patch):
         return version
 
 
-def create_parser():
-    parser = argparse.ArgumentParser()
+def create_parser() -> ArgumentParser:
+    parser = ArgumentParser()
     parser.add_argument(
         "--major", action="store_true", default=False, help="Bump major version"
     )
@@ -66,7 +70,7 @@ def create_parser():
     return parser
 
 
-def _run_tests():
+def _run_tests() -> bool:
     try:
         run(["python", "-m", "nox", "--stop-on-first-error"], check=True)
         return True
@@ -75,14 +79,14 @@ def _run_tests():
         return False
 
 
-def _change_log(version):
+def _change_log(version: Version) -> str:
     c = run(
         ["git", "--no-pager", "log", "--oneline", f"{version}..HEAD"],
         stdout=subprocess.PIPE,
         check=True,
     )
 
-    def clean(entry):
+    def clean(entry: str) -> str:
         parts = entry.split(" ")
         return " ".join(parts[1:])
 
@@ -90,7 +94,9 @@ def _change_log(version):
     return "\n".join(f"* {clean(line)}" for line in lines)
 
 
-def _update_version(version, inc_major, inc_minor, inc_patch):
+def _update_version(
+    version: Version, inc_major: bool, inc_minor: bool, inc_patch: bool
+) -> Version:
     if not any((inc_major, inc_minor, inc_patch)):
         raise ValueError("At least one version component needs to be bumped")
     major, minor, patch = version.major, version.minor, version.patch
@@ -100,7 +106,7 @@ def _update_version(version, inc_major, inc_minor, inc_patch):
     return bump_version(major, minor, patch)
 
 
-def _add_release_notes(release_notes, version, change_log):
+def _add_release_notes(release_notes: Path, version: Version, change_log: str) -> None:
     with open(release_notes, "r+") as f:
         _date = date.today()
         old_release_notes = f.read()
@@ -125,7 +131,7 @@ def _add_release_notes(release_notes, version, change_log):
         )
 
 
-def _commit_new_version(version, change_log):
+def _commit_new_version(version: Version, change_log: str) -> None:
     commit_msg = cleandoc(
         """
     Release {version}
@@ -139,20 +145,20 @@ def _commit_new_version(version, change_log):
     run(["git", "commit", "--amend"], check=True)
 
 
-def _add_git_tag(version):
+def _add_git_tag(version: Version) -> None:
     run(["git", "tag", "-a", "-m", f"Release {version}", f"{version}"], check=True)
 
 
-def _build():
+def _build() -> None:
     run(["poetry", "build"], check=True)
 
 
-def _publish(version):
+def _publish(version: Version) -> None:
     run(["git", "push", "origin", f"{version}"], check=True)
     run(["poetry", "publish"], check=True)
 
 
-def main(argv=None):
+def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = create_parser()
     args = parser.parse_args()
     old_version = current_version()
