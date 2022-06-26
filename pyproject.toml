@@ -99,4 +99,5 @@ profile = "black"
 
 [tool.mypy]
 files = [
+    'scripts/**/*.py',
 ]
