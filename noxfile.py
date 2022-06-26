@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import nox
+from nox import Session
 
 BASEPATH = Path(__file__).parent.resolve()
 
@@ -18,19 +19,19 @@ nox.options.sessions = [
 
 
 @nox.session(python=False)
-def clean(session):
+def clean(_: Session) -> None:
     coverage_file = BASEPATH / ".coverage"
     coverage_file.unlink(missing_ok=True)
 
 
 @nox.session(python=False)
-def fix(session):
+def fix(session: Session) -> None:
     session.run("poetry", "run", "python", "-m", "isort", "-v", f"{BASEPATH}")
     session.run("poetry", "run", "python", "-m", "black", f"{BASEPATH}")
 
 
 @nox.session(python=False)
-def code_format(session):
+def code_format(session: Session) -> None:
     session.run(
         "poetry",
         "run",
@@ -45,20 +46,20 @@ def code_format(session):
 
 
 @nox.session(python=False)
-def isort(session):
+def isort(session: Session) -> None:
     session.run(
         "poetry", "run", "python", "-m", "isort", "-v", "--check", f"{BASEPATH}"
     )
 
 
 @nox.session(python=False)
-def pylint(session):
+def pylint(session: Session) -> None:
     session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "prysk"}')
     session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "scripts"}')
 
 
 @nox.session(python=False)
-def unit(session):
+def unit(session: Session) -> None:
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     session.run(
@@ -77,7 +78,7 @@ def unit(session):
 
 @nox.session(python=False)
 @nox.parametrize("shell", ["dash", "bash", "zsh"])
-def integration(session, shell):
+def integration(session: Session, shell: str) -> None:
     session.env["TESTOPTS"] = f"--shell={shell}"
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
@@ -97,7 +98,7 @@ def integration(session, shell):
 
 
 @nox.session(python=False)
-def mypy(session):
+def mypy(session: Session) -> None:
     session.run(
         "poetry",
         "run",
@@ -112,7 +113,7 @@ def mypy(session):
 
 
 @nox.session(python=False)
-def coverage(session):
+def coverage(session: Session) -> None:
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     session.run("coverage", "report", "--fail-under=97")
@@ -120,6 +121,6 @@ def coverage(session):
 
 
 @nox.session(python=False)
-def docs(session):
+def docs(session: Session) -> None:
     docs_folder = BASEPATH / "docs"
     session.run("sphinx-build", f"{docs_folder}", f'{docs_folder / "_build" / "html"}')
