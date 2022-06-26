@@ -100,4 +100,5 @@ profile = "black"
 [tool.mypy]
 files = [
     'scripts/**/*.py',
+    'noxfile.py'
 ]
