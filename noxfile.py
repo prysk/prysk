@@ -9,6 +9,7 @@ nox.options.sessions = [
     "isort",
     "code_format",
     "pylint",
+    "mypy",
     "unit",
     "integration",
     "coverage",
