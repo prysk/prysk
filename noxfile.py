@@ -96,6 +96,11 @@ def integration(session, shell):
 
 
 @nox.session(python=False)
+def mypy(session):
+    session.run("poetry", "run", "mypy")
+
+
+@nox.session(python=False)
 def coverage(session):
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
