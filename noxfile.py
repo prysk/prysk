@@ -1,9 +1,12 @@
+from inspect import cleandoc
 from pathlib import Path
 
 import nox
 from nox import Session
 
 BASEPATH = Path(__file__).parent.resolve()
+DOCS = BASEPATH / "docs"
+BUILD = DOCS / "_build"
 
 nox.options.sessions = [
     "clean",
@@ -123,4 +126,27 @@ def coverage(session: Session) -> None:
 @nox.session(python=False)
 def docs(session: Session) -> None:
     docs_folder = BASEPATH / "docs"
-    session.run("sphinx-build", f"{docs_folder}", f'{docs_folder / "_build" / "html"}')
+    session.run("sphinx-build", f"{DOCS}", f"{BUILD}")
+
+
+@nox.session(name="multi-version-docs", python=False)
+def multi_version_docs(session: Session) -> None:
+    session.run("sphinx-multiversion", f"{DOCS}", f"{BUILD}")
+    with open(BUILD / "index.html", "w") as f:
+        f.write(
+            cleandoc(
+                """
+              <!DOCTYPE HTML>
+              <html lang="en-US">
+              <head>
+                  <meta charset="UTF-8">
+                  <meta http-equiv="refresh" content="0; url=main/index.html">
+                  <title>Page Redirection</title>
+              </head>
+              <body>
+                  <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
+                  If you are not redirected automatically, follow this <a href='main/index.html'>Documentation</a>.
+              </body>
+              """
+            )
+        )
