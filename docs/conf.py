@@ -23,6 +23,7 @@ from release import current_version
 project = "prysk"
 author = "Brodie Rao, Nicola Coretti & Contributors"
 copyright = author
+release = ""
 # The full version, including alpha/beta/rc tags
 
 # -- General configuration ---------------------------------------------------
