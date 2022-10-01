@@ -125,7 +125,6 @@ def coverage(session: Session) -> None:
 
 @nox.session(python=False)
 def docs(session: Session) -> None:
-    docs_folder = BASEPATH / "docs"
     session.run("sphinx-build", f"{DOCS}", f"{BUILD}")
 
 
