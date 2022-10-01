@@ -7,7 +7,7 @@ on:
       - "**"
 jobs:
   build-and-deploy:
-    name: ⚙️ Build & Deploy 🚀
+    name: ⚙️ Build & Deploy
     runs-on: ubuntu-latest
 
     steps:
