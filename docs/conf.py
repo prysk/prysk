@@ -16,8 +16,6 @@ from pathlib import Path
 CURRENT_DIR = Path(__file__).parent.resolve()
 sys.path.insert(0, f"{CURRENT_DIR.parent}")
 
-from release import current_version
-
 # -- Project information -----------------------------------------------------
 
 project = "prysk"
