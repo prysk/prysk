@@ -710,6 +710,17 @@ code_style = ["pre-commit (==2.12.1)"]
 rtd = ["sphinx", "ipython", "myst-nb", "sphinx-book-theme"]
 
 [[package]]
+name = "sphinx-multiversion"
+version = "0.2.4"
+description = "Add support for multiple versions to sphinx"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+sphinx = ">=2.1"
+
+[[package]]
 name = "sphinxcontrib-applehelp"
 version = "1.0.2"
 description = "sphinxcontrib-applehelp is a sphinx extension which outputs Apple help books"
@@ -874,7 +885,7 @@ docs = ["jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "jaraco.packaging (>=9)
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "15befb6a1a67360aad1730b285a4920be356e3f8aea6a3e5b0c0ad2105b5b3a0"
+content-hash = "465ee9976a799314a24bc6c42c017ae44fbb4c036b1f9d7120aee3ba5d68a6e7"
 
 [metadata.files]
 alabaster = [
@@ -1173,6 +1184,7 @@ sphinx-copybutton = [
     {file = "sphinx-copybutton-0.5.0.tar.gz", hash = "sha256:a0c059daadd03c27ba750da534a92a63e7a36a7736dcf684f26ee346199787f6"},
     {file = "sphinx_copybutton-0.5.0-py3-none-any.whl", hash = "sha256:9684dec7434bd73f0eea58dda93f9bb879d24bff2d8b187b1f2ec08dfe7b5f48"},
 ]
+sphinx-multiversion = []
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
     {file = "sphinxcontrib_applehelp-1.0.2-py2.py3-none-any.whl", hash = "sha256:806111e5e962be97c29ec4c1e7fe277bfd19e9652fb1a4392105b43e01af885a"},

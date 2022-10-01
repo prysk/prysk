@@ -4,10 +4,12 @@ on:
     branches:
       - master
     tags:
-      - "*"
+      - "**"
 jobs:
   build-and-deploy:
+    name: ⚙️ Build & 🚀 Deploy
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,17 +24,17 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          poetry install 
+          poetry install
 
       - name: Build Documenations
         run: |
-          poetry run python -m nox -s docs
-          touch docs/_build/html/.nojekyll
+          poetry run python -m nox -s multi-version-docs
+          touch docs/_build/.nojekyll
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.4.0
         with:
           branch: gh-pages
-          folder: ./docs/_build/html
+          folder: ./docs/_build
           git-config-name: Nicola Coretti
           git-config-email: nico.coretti@gmail.com
