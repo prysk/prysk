@@ -140,12 +140,12 @@ def multi_version_docs(session: Session) -> None:
               <html lang="en-US">
               <head>
                   <meta charset="UTF-8">
-                  <meta http-equiv="refresh" content="0; url=main/index.html">
+                  <meta http-equiv="refresh" content="0; url=master/index.html">
                   <title>Page Redirection</title>
               </head>
               <body>
                   <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
-                  If you are not redirected automatically, follow this <a href='main/index.html'>Documentation</a>.
+                  If you are not redirected automatically, follow this <a href='master/index.html'>Documentation</a>.
               </body>
               """
             )
