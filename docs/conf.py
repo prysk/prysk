@@ -24,7 +24,6 @@ project = "prysk"
 author = "Brodie Rao, Nicola Coretti & Contributors"
 copyright = author
 # The full version, including alpha/beta/rc tags
-release = f"{current_version()}"
 
 # -- General configuration ---------------------------------------------------
 
