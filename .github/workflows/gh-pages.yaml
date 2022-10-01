@@ -7,7 +7,7 @@ on:
       - "**"
 jobs:
   build-and-deploy:
-    name: ⚙️ Build & 🚀 Deploy
+    name: ⚙️ Build & Deploy 🚀
     runs-on: ubuntu-latest
 
     steps:
@@ -26,9 +26,9 @@ jobs:
         run: |
           poetry install
 
-      - name: Build Documenations
+      - name: Build Documentation
         run: |
-          poetry run python -m nox -s multi-version-docs
+          poetry run nox -s multi-version-docs
           touch docs/_build/.nojekyll
 
       - name: Deploy
