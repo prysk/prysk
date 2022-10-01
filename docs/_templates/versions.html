@@ -3,7 +3,7 @@
  <ul>
    {%- for item in versions | reverse %}
    {%- if item.name == "master" %}
-   <li><a href="{{ item.url }}">unreleased (master)</a></li>
+   <li><a href="{{ item.url }}">unreleased</a></li>
    {%- else %}
    <li><a href="{{ item.url }}">{{ item.name }}</a></li>
    {%- endif %}
