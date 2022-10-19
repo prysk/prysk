@@ -179,6 +179,9 @@ def test(
     i = pos = prepos = -1
     stdin = []
     for i, line in enumerate(lines):
+        # Convert Windows style line endings to UNIX
+        if line.endswith(b"\r\n"):
+            line = line[:-2] + b"\n"
         if not line.endswith(b"\n"):
             line += b"\n"
         refout.append(line)
@@ -208,6 +211,9 @@ def test(
             out, cmd = line.split(salt, 1)
 
         if out:
+            # Convert Windows style line endings to UNIX
+            if out.endswith(b"\r\n"):
+                out = out[:-2] + b"\n"
             if not out.endswith(b"\n"):
                 out += b" (no-eol)\n"
 
