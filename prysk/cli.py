@@ -191,6 +191,11 @@ class _ArgumentParser:
             metavar="PATH",
             help="path to write xUnit XML output",
         )
+        parser.add_argument(
+            "--dos2unix",
+            action="store_true",
+            help="convert DOS/Windows line endings to UNIX line endings",
+        )
         return parser
 
     def __init__(self, *args, **kwargs):
@@ -488,6 +493,7 @@ class _Cli:
                 indent=settings.indent,
                 cleanenv=not settings.preserve_env,
                 debug=settings.debug,
+                dos2unix=settings.dos2unix
             )
             if not settings.debug:
                 tests = self._runcli(

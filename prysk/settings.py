@@ -21,6 +21,7 @@ class Settings:
     indent: int = None
     color: str = "auto"
     xunit_file: str = None
+    dos2unix: bool = None
 
 
 def settings_from(obj):
