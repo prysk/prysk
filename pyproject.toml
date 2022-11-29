@@ -55,7 +55,7 @@ exclude = [
 prysk = "prysk:main"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = ">=3.7,<4.0.0"
 rich = "^12.4.4"
 
 [tool.poetry.dev-dependencies]
@@ -72,7 +72,7 @@ Sphinx = "^5.3.0"
 furo = "^2022.3.4"
 nox = "^2022.1.7"
 pre-commit = "^2.19.0"
-mypy = "^0"
+mypy = "<1"
 sphinx-multiversion = "^0.2.4"
 
 [tool.coverage.run]
