@@ -1,10 +1,10 @@
 Prysk
 ======================
-.. image:: https://github.com/Nicoretti/prysk/actions/workflows/verifier.yaml/badge.svg
-    :target: https://github.com/Nicoretti/prysk/actions/workflows/verifier.yaml
+.. image:: https://img.shields.io/github/checks-status/nicoretti/prysk/master
+    :target: https://github.com/Nicoretti/prysk/actions
 
-.. image:: https://coveralls.io/repos/github/Nicoretti/prysk/badge.svg?branch=master
-    :target: https://coveralls.io/github/Nicoretti/prysk?branch=master
+.. image:: https://img.shields.io/coverallsCoverage/github/Nicoretti/prysk
+    :target: https://coveralls.io/github/Nicoretti/prysk
 
 .. image:: https://img.shields.io/badge/imports-isort-ef8336.svg
     :target: https://pycqa.github.io/isort/
