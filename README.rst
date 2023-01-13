@@ -20,7 +20,7 @@ Prysk
 
 Prysk is a fork of the popular snapshot testing tool Cram_.
 Even though Cram_ is pretty complete and mature for everyday use,
-Prysk want's to continue pushing it's development forward.
+Prysk wants to continue pushing its development forward.
 
 .. _Cram: https://bitheap.org/cram
 
