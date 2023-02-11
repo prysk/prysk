@@ -1,6 +1,6 @@
 Prysk
 ======================
-.. image:: https://img.shields.io/github/checks-status/nicoretti/prysk/master
+.. image:: https://img.shields.io/github/actions/workflow/status/nicoretti/prysk/verifier.yaml
     :target: https://github.com/Nicoretti/prysk/actions
 
 .. image:: https://img.shields.io/coverallsCoverage/github/Nicoretti/prysk
