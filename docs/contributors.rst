@@ -24,6 +24,8 @@ So without further ado, the contributors:
 * Kamil Kisiel
 * PJ Eby
 * Petri Lehtinen
+* Fahmi Ghediri
+* Mehul Kar
 
 The most up to date list you'll find on Github_ though.
 
