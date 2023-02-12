@@ -25,6 +25,25 @@ _SKIP = 80
 _IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
 
 
+def is_hidden(path):
+    """Check if a path (file/dir) is hidden or not."""
+
+    def _is_hidden(part):
+        return (
+            part.startswith(".")
+            and not part == "."
+            and not part.startswith("..")
+            and not part.startswith("./")
+        )
+
+    return any(map(_is_hidden, path.parts))
+
+
+def is_testfile(path):
+    """Check if path is a valid prysk test file"""
+    return path.is_file() and path.suffix == ".t" and not is_hidden(path)
+
+
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     escape_sub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
@@ -37,23 +56,6 @@ def _findtests(paths):
     """Yield tests in paths in sorted order"""
 
     paths = list(map(Path, paths))
-
-    def is_hidden(path):
-        """Check if a path (file/dir) is hidden or not."""
-
-        def _is_hidden(part):
-            return (
-                part.startswith(".")
-                and not part == "."
-                and not part.startswith("..")
-                and not part.startswith("./")
-            )
-
-        return any(map(_is_hidden, path.parts))
-
-    def is_testfile(path):
-        """Check if path is a valid prysk test file"""
-        return path.is_file() and path.suffix == ".t" and not is_hidden(path)
 
     def is_test_dir(path):
         """Check if the path is a valid prysk test dir"""

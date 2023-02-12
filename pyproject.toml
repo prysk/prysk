@@ -6,7 +6,11 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "prysk"
-version = "0.12.2"
+packages = [
+    { include = "prysk" },
+    { include = "pytest_prysk" }
+]
+version = "0.13.0"
 description = "Functional tests for command line applications"
 readme = "README.rst"
 license = "GNU GPLv2 or any later version"
@@ -25,6 +29,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Unix Shell",
     "Topic :: Software Development :: Testing",
+    "Framework :: Pytest",
 ]
 keywords = [
     "test framework",
@@ -57,6 +62,14 @@ prysk = "prysk:main"
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"
 rich = "^13.3.1"
+pytest = { version = ">=7.0.1", optional = true }
+pytest-xdist = {version = "^3.2.0", extras = ["psutil"]}
+
+[tool.poetry.extras]
+pytest-plugin = ["pytest"]
+
+[tool.poetry.plugins.pytest11]
+prysk = "pytest_prysk"
 
 [tool.poetry.dev-dependencies]
 tomli = "^2.0.1"
@@ -74,6 +87,9 @@ nox = "^2022.1.7"
 pre-commit = "^2.19.0"
 mypy = "<1"
 sphinx-multiversion = "^0.2.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest-xdist = "^3.2.0"
 
 [tool.coverage.run]
 source = [
@@ -104,4 +120,10 @@ files = [
     'noxfile.py',
     'release.py',
     'scripts/**/*.py',
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra -q --strict-config --ignore=examples"
+testpaths = [
+    "test",
 ]
