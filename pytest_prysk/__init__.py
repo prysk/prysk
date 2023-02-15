@@ -145,9 +145,9 @@ class Item(pytest.Item):
         self.tmpdir.__exit__(None, None, None)
 
     def repr_failure(
-            self,
-            excinfo: ExceptionInfo[BaseException],
-            style: "Optional[_TracebackStyle]" = None,
+        self,
+        excinfo: ExceptionInfo[BaseException],
+        style: "Optional[_TracebackStyle]" = None,
     ) -> Union[str, TerminalRepr]:
         if excinfo.errisinstance(TestFailure):
             return b"".join(excinfo.value.args[0]).decode()
