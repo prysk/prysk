@@ -104,7 +104,7 @@ max-line-length = 88
 max-module-lines = 800
 
 [tool.pylint.message_control]
-disable = "C0330, C0326"
+disable = "C0330, C0326,E1101"
 
 [tool.black]
 line-length = 88
