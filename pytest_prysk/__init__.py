@@ -1,7 +1,12 @@
 try:
     import pytest
 except ImportError as ex:
-    error_msg = "TBD: add warning/info that it should be installed with feature flag"
+    error_msg = (
+        "Pytest not available, "
+        "make sure you install pryskk using the extra [].\n"
+        "For further details, see also"
+        "https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-extras"
+    )
     raise Exception(error_msg) from ex
 
 import os
@@ -43,9 +48,13 @@ _OPTIONS = {
     "shell": {
         "default": "/bin/sh",
         "type": str,
-        "help": "Set the shell which will be used by prysk",
+        "help": "Set the shell which will be used by prysk (default: %default)",
     },
-    "disable": {"default": False, "type": bool, "help": "Don't run prysk based tests"},
+    "indent": {
+        "default": 2,
+        "type": int,
+        "help": "Number of spaces to use for indentation (default: %default)",
+    },
 }
 
 
@@ -67,9 +76,6 @@ def update_options(options):
     cli_arguments = {
         attr_name: value
         for attr_name, value in cli_arguments.items()
-        # Attention:
-        #   boolean flags currently can't be overwritten by envars,
-        #   additional check if value != default value is required.
         if attr_name in name_to_attribute_name.values() and value is not None
     }
     envvars = {
@@ -95,23 +101,8 @@ class TestFailure(Exception):
 
 def pytest_addoption(parser):
     group = parser.getgroup("prysk")
-
-    def _create_option_args(name, settings):
-        args = (_option_name(name),)
-        kwargs = {}
-        if settings["type"] == bool:
-            default = settings["default"]
-            mapping = {False: "store_true", True: "store_false"}
-            kwargs["action"] = mapping[default]
-        else:
-            kwargs["type"] = settings["type"]
-        kwargs["help"] = settings["help"]
-
-        return args, kwargs
-
     for name, settings in _OPTIONS.items():
-        args, kwargs = _create_option_args(name, settings)
-        group.addoption(*args, **kwargs)
+        group.addoption(_option_name(name), **settings)
 
 
 def pytest_collect_file(parent, file_path):
@@ -130,6 +121,7 @@ class Item(pytest.Item):
         self.add_marker("prysk")
         self.tmpdir = TemporaryDirectory()
         self.shell = options.prysk_shell
+        self.indent = options.prysk_indent
 
     def setup(self) -> None:
         self.tmpdir.__enter__()
@@ -138,7 +130,9 @@ class Item(pytest.Item):
         with cwd(self.tmpdir.name):
             variables = {"PRYSK_TEMP": self.tmpdir.name}
             with environment(variables):
-                ins, outs, diff = prysk.test.testfile(self.path, shell=self.shell)
+                ins, outs, diff = prysk.test.testfile(
+                    path=self.path, shell=self.shell, indent=self.indent
+                )
 
         if outs is None and len(diff) == 0:
             pytest.skip("Process exited with return code 80")
@@ -151,9 +145,9 @@ class Item(pytest.Item):
         self.tmpdir.__exit__(None, None, None)
 
     def repr_failure(
-        self,
-        excinfo: ExceptionInfo[BaseException],
-        style: "Optional[_TracebackStyle]" = None,
+            self,
+            excinfo: ExceptionInfo[BaseException],
+            style: "Optional[_TracebackStyle]" = None,
     ) -> Union[str, TerminalRepr]:
         if excinfo.errisinstance(TestFailure):
             return b"".join(excinfo.value.args[0]).decode()
