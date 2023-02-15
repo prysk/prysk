@@ -12,6 +12,7 @@
 
    readme
    getting_started
+   pytest-plugin
    development
    contributors
    news
