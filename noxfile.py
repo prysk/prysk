@@ -74,6 +74,9 @@ def unit(session: Session) -> None:
         f'--rcfile={BASEPATH / "pyproject.toml"}',
         "-m",
         "pytest",
+        "-v",
+        "-p",
+        "no:prysk",
         "--doctest-modules",
         f"{BASEPATH}",
     )
