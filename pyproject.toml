@@ -63,7 +63,6 @@ prysk = "prysk:main"
 python = ">=3.7,<4.0.0"
 rich = "^13.3.1"
 pytest = { version = ">=7.0.1", optional = true }
-pytest-xdist = { version = "^3.2.0", extras = ["psutil"] }
 
 [tool.poetry.extras]
 pytest-plugin = ["pytest"]
@@ -87,9 +86,7 @@ nox = "^2022.1.7"
 pre-commit = "^2.19.0"
 mypy = "<1"
 sphinx-multiversion = "^0.2.4"
-
-[tool.poetry.group.dev.dependencies]
-pytest-xdist = "^3.2.0"
+pytest-xdist = { version = "^3.2.0", extras = ["psutil"] }
 
 [tool.coverage.run]
 source = [
