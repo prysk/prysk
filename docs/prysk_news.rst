@@ -1,3 +1,7 @@
+Version 0.13.0 (Feb. 16, 2023)
+-----------------------------------------------------
+* Added prysk pytest-plugin
+
 Version 0.12.2 (June. 15, 2022)
 -----------------------------------------------------
 * Fix prysk test file lookup for relative paths
