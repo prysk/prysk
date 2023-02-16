@@ -48,12 +48,12 @@ _OPTIONS = {
     "shell": {
         "default": "/bin/sh",
         "type": str,
-        "help": "Set the shell which will be used by prysk (default: %default)",
+        "help": "Set the shell which will be used by prysk (default: %(default)s)",
     },
     "indent": {
         "default": 2,
         "type": int,
-        "help": "Number of spaces to use for indentation (default: %default)",
+        "help": "Number of spaces to use for indentation (default: %(default)s)",
     },
 }
 
@@ -66,7 +66,7 @@ def _option_name(name) -> str:
     return f"--prysk-{name.lower()}"
 
 
-def update_options(options):
+def _update_options(options):
     envvar_to_name = {_envvar_name(name): name for name in _OPTIONS}
     name_to_attribute_name = {
         name: f'prysk_{name.replace("-", "_")}' for name in _OPTIONS
@@ -102,7 +102,9 @@ class TestFailure(Exception):
 def pytest_addoption(parser):
     group = parser.getgroup("prysk")
     for name, settings in _OPTIONS.items():
-        group.addoption(_option_name(name), **settings)
+        kwargs = settings.copy()
+        del kwargs["default"]
+        group.addoption(_option_name(name), **kwargs)
 
 
 def pytest_collect_file(parent, file_path):
@@ -159,4 +161,4 @@ class Item(pytest.Item):
 
 def pytest_configure(config):
     config.addinivalue_line("markers", "prysk: mark test to be executed with prysk")
-    update_options(config.option)
+    _update_options(config.option)

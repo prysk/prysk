@@ -63,7 +63,7 @@ prysk = "prysk:main"
 python = ">=3.7,<4.0.0"
 rich = "^13.3.1"
 pytest = { version = ">=7.0.1", optional = true }
-pytest-xdist = {version = "^3.2.0", extras = ["psutil"]}
+pytest-xdist = { version = "^3.2.0", extras = ["psutil"] }
 
 [tool.poetry.extras]
 pytest-plugin = ["pytest"]
@@ -94,6 +94,10 @@ pytest-xdist = "^3.2.0"
 [tool.coverage.run]
 source = [
     "prysk",
+    "pytest_prysk"
+]
+disable_warnings = [
+    "module-not-imported"
 ]
 
 [tool.pylint.master]
