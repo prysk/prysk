@@ -61,10 +61,10 @@ The format in a nutshell:
 
 * Prysk tests use the ``.t`` file extension.
 
-* Lines beginning with two spaces, a dollar sign, and a space are run
+* Lines beginning with two spaces, a dollar sign (``$``), and a space are run
   in the shell.
 
-* Lines beginning with two spaces, a greater than sign, and a space
+* Lines beginning with two spaces, a greater than sign (``>``), and a space
   allow multi-line commands.
 
 * All other lines beginning with two spaces are considered command
