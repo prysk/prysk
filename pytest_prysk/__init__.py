@@ -3,8 +3,8 @@ try:
 except ImportError as ex:
     error_msg = (
         "Pytest not available, "
-        "make sure you install pryskk using the extra [].\n"
-        "For further details, see also"
+        "make sure you install prysk using the extra [pytest-prysk].\n"
+        "For further details, see also "
         "https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-extras"
     )
     raise Exception(error_msg) from ex
