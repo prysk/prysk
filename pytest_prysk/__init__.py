@@ -11,7 +11,10 @@ except ImportError as ex:
 
 import os
 from collections import ChainMap
-from contextlib import contextmanager
+from contextlib import (
+    ExitStack,
+    contextmanager,
+)
 from tempfile import TemporaryDirectory
 from typing import (
     Iterable,
@@ -121,20 +124,19 @@ class Item(pytest.Item):
     def __init__(self, options, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.add_marker("prysk")
-        self.tmpdir = TemporaryDirectory()
         self.shell = options.prysk_shell
         self.indent = options.prysk_indent
 
-    def setup(self) -> None:
-        self.tmpdir.__enter__()
-
     def runtest(self) -> None:
-        with cwd(self.tmpdir.name):
-            variables = {"PRYSK_TEMP": self.tmpdir.name}
-            with environment(variables):
-                ins, outs, diff = prysk.test.testfile(
-                    path=self.path, shell=self.shell, indent=self.indent
-                )
+        with ExitStack() as context_stack:
+            tmpdir = context_stack.enter_context(TemporaryDirectory())
+            _ = context_stack.enter_context(cwd(tmpdir))
+            _ = context_stack.enter_context(
+                environment(variables={"PRYSK_TEMP": tmpdir})
+            )
+            ins, outs, diff = prysk.test.testfile(
+                path=self.path, shell=self.shell, indent=self.indent
+            )
 
         if outs is None and len(diff) == 0:
             pytest.skip("Process exited with return code 80")
@@ -142,9 +144,6 @@ class Item(pytest.Item):
             pytest.skip("Test is empty")
         elif diff:
             raise TestFailure(diff)
-
-    def teardown(self) -> None:
-        self.tmpdir.__exit__(None, None, None)
 
     def repr_failure(
         self,
