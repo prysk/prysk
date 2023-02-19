@@ -1,7 +1,7 @@
 Pytest-Plugin
 ==============
 Prysk optionally can be installed with pytest support. If the user chooses to do so,
-various features an benefits provided by pytest and its plugins will be also available
+various features and benefits provided by pytest and its plugins will be also available
 for the prysk tests.
 
 E.g.:
@@ -30,4 +30,3 @@ So usually a simple :code:`pytest` does the trick.
 .. attention::
 
     In case you want to prevent pytest from running any prysk test just pass :code:`-p no:prysk` to the pytest cli.
-
