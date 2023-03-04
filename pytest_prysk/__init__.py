@@ -36,7 +36,8 @@ def environment(variables):
     old_env = os.environ.copy()
     os.environ.update(variables)
     yield os.environ
-    os.environ = old_env
+    os.environ.clear()
+    os.environ.update(old_env)
 
 
 @contextmanager

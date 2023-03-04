@@ -1,4 +1,5 @@
 import os
+import shutil
 from inspect import cleandoc
 
 import pytest
@@ -116,3 +117,52 @@ def test_successful_test_is_reported(pytester):
 def test_no_test_files_found(pytester):
     result = pytester.runpytest()
     assert result.ret == pytest.ExitCode.NO_TESTS_COLLECTED
+
+
+def test_regression_github_issue_169(pytester):
+    prysk_file = pytester.makefile(
+        ".t",
+        # fmt: off
+        cleandoc(
+            """
+            Smoke test
+              $ echo Foo
+              Foo
+            """
+            # fmt: on
+        ),
+    )
+    python_file = pytester.makefile(
+        ".py",
+        cleandoc(
+            # fmt: off
+            '''
+            from os import (
+                environ,
+                pathsep,
+            )
+
+            def extend_path():
+                """
+                >>> from os import environ
+                >>> expected = "/this/is/just/a/unique/entry"
+                >>> expected in environ['PATH']
+                False
+                >>> extend_path()
+                >>> expected in environ['PATH']
+                True
+                """
+                environ["PATH"] += pathsep + "/this/is/just/a/unique/entry"
+            '''
+            # fmt: on
+        ),
+    )
+
+    # we need to make sure the prysk test is executed before the doctest in order to trigger the bug
+    prysk_tests = pytester.mkdir("a")
+    python_tests = pytester.mkdir("z")
+    shutil.move(prysk_file, prysk_tests)
+    shutil.move(python_file, python_tests)
+
+    result = pytester.runpytest("--doctest-modules")
+    assert result.ret == pytest.ExitCode.OK
