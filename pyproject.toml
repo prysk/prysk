@@ -8,9 +8,9 @@ build-backend = "poetry.core.masonry.api"
 name = "prysk"
 packages = [
     { include = "prysk" },
-    { include = "pytest_prysk" }
+    { include = "pytest_prysk" },
 ]
-version = "0.13.0"
+version = "0.13.1"
 description = "Functional tests for command line applications"
 readme = "README.rst"
 license = "GNU GPLv2 or any later version"
@@ -62,10 +62,15 @@ prysk = "prysk:main"
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0.0"
 rich = "^13.3.1"
-pytest = { version = ">=7.0.1", optional = true }
+
+[tool.poetry.dependencies.pytest]
+version = ">=7.0.1"
+optional = true
 
 [tool.poetry.extras]
-pytest-plugin = ["pytest"]
+pytest-plugin = [
+    "pytest",
+]
 
 [tool.poetry.plugins.pytest11]
 prysk = "pytest_prysk"
@@ -86,15 +91,20 @@ nox = "^2022.1.7"
 pre-commit = "^2.19.0"
 mypy = "<1"
 sphinx-multiversion = "^0.2.4"
-pytest-xdist = { version = "^3.2.0", extras = ["psutil"] }
+
+[tool.poetry.dev-dependencies.pytest-xdist]
+version = "^3.2.0"
+extras = [
+    "psutil",
+]
 
 [tool.coverage.run]
 source = [
     "prysk",
-    "pytest_prysk"
+    "pytest_prysk",
 ]
 disable_warnings = [
-    "module-not-imported"
+    "module-not-imported",
 ]
 
 [tool.pylint.master]
@@ -118,9 +128,9 @@ force_grid_wrap = 2
 
 [tool.mypy]
 files = [
-    'noxfile.py',
-    'release.py',
-    'scripts/**/*.py',
+    "noxfile.py",
+    "release.py",
+    "scripts/**/*.py",
 ]
 
 [tool.pytest.ini_options]

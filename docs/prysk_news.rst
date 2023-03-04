@@ -1,3 +1,11 @@
+Version 0.13.1 (March. 4, 2023)
+-----------------------------------------------------
+* Fix os.environ restore after leaving context
+* Narrow scope of contexts for test run
+* Fix pytest-plugin error message
+* Fix typo in pytest-plugin documentation
+* Add literal character in docs
+
 Version 0.13.0 (Feb. 16, 2023)
 -----------------------------------------------------
 * Added prysk pytest-plugin
