@@ -215,6 +215,14 @@ def test(
 
             if _IS_ESCAPING_NEEDED(out):
                 out = _escape(out)
+
+            try:
+                tmpdir = os.environb[b"TMPDIR"]
+            except KeyError:
+                pass
+            else:
+                out = re.sub(re.escape(tmpdir), b"$TMPDIR", out)
+
             postout.append(indent + out)
 
         if cmd:
