@@ -152,7 +152,8 @@ Note that the following environment variables are reset before tests
 are run:
 
 * ``TMPDIR``, ``TEMP``, and ``TMP`` are set to the test runner's
-  ``tmp`` directory.
+  ``tmp`` directory. In test output, occurrences of this directory are
+  replaced by ``$TMPDIR``.
 
 * ``LANG``, ``LC_ALL``, and ``LANGUAGE`` are set to ``C``.
 

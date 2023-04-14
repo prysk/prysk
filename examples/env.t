@@ -26,5 +26,9 @@ Check environment variables:
   test.t
   $ echo "$TESTFILE"
   env.t
+  $ echo "$TMPDIR/x/y"
+  $TMPDIR/x/y
+  $ echo "$TMP/foo/bar"
+  $TMPDIR/foo/bar
   $ pwd
   */prysk-tests*/env.t (glob)

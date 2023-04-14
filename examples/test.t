@@ -71,6 +71,11 @@ Escaped output:
   $ echo '(esc) in output (esc)'
   (esc) in output \x28esc\x29 (esc)
 
+Temporary directory:
+
+  $ echo "The temporary directory: $TMPDIR"
+  The temporary directory: $TMPDIR
+
 Command that closes a pipe:
 
   $ cat /dev/urandom | head -1 > /dev/null
