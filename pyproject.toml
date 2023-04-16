@@ -129,7 +129,6 @@ force_grid_wrap = 2
 [tool.mypy]
 files = [
     "noxfile.py",
-    "release.py",
     "scripts/**/*.py",
 ]
 
