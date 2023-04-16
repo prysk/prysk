@@ -1,5 +1,8 @@
 Unreleased
 -----------------------------------------------------
+
+Version 0.14.0 (April. 16, 2023)
+-----------------------------------------------------
 * Add support for $TMPDIR variable substitution in test output
 * Update dependencies
 
