@@ -1,3 +1,7 @@
+Unreleased
+-----------------------------------------------------
+* Add support for $TMPDIR variable substitution in test output
+
 Version 0.13.1 (March. 4, 2023)
 -----------------------------------------------------
 * Fix os.environ restore after leaving context
