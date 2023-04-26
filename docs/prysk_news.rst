@@ -1,6 +1,10 @@
 Unreleased
 -----------------------------------------------------
+
+Version 0.15.0 (April. 26, 2023)
+-----------------------------------------------------
 * Add support for DOS to Unix line endings (\r\n to \n)
+* Updated Contributors (Hall Of Fame!)
 
 Version 0.14.0 (April. 16, 2023)
 -----------------------------------------------------

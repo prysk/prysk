@@ -18,6 +18,8 @@ So without further ado, the contributors:
 * Alexander Solovyov
 * Daniel Hahler
 * Andrey Vlasovskikh
+* Mehul Kar
+* Nigel Stewart
 * kdreyer-redhat
 * Cédric Duval
 * Douglas Creager
@@ -25,7 +27,7 @@ So without further ado, the contributors:
 * PJ Eby
 * Petri Lehtinen
 * Fahmi Ghediri
-* Mehul Kar
+* Larsson Rasmus
 
 The most up to date list you'll find on Github_ though.
 
