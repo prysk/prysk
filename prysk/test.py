@@ -271,7 +271,14 @@ def _debug(cmdline, conline, env, lines, shell):
 
 
 def testfile(
-    path, shell="/bin/sh", indent=2, env=None, cleanenv=True, debug=False, testname=None, dos2unix=False
+    path,
+    shell="/bin/sh",
+    indent=2,
+    env=None,
+    cleanenv=True,
+    debug=False,
+    testname=None,
+    dos2unix=False,
 ):
     """Run test at path and return input, output, and diff.
 
@@ -319,11 +326,13 @@ def testfile(
             env=env,
             cleanenv=cleanenv,
             debug=debug,
-            dos2unix=dos2unix
+            dos2unix=dos2unix,
         )
 
 
-def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False, dos2unix=False):
+def runtests(
+    paths, tmpdir, shell, indent=2, cleanenv=True, debug=False, dos2unix=False
+):
     """Run tests and yield results.
 
     This yields a sequence of 2-tuples containing the following:
@@ -365,7 +374,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False, dos2uni
                     cleanenv=cleanenv,
                     debug=debug,
                     testname=path,
-                    dos2unix=dos2unix
+                    dos2unix=dos2unix,
                 )
 
         yield path, test

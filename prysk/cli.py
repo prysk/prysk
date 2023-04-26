@@ -21,7 +21,7 @@ from prysk.settings import (
 from prysk.test import runtests
 from prysk.xunit import runxunit
 
-VERSION = "0.14.0"
+VERSION = "0.14.1"
 
 
 class ExitCode:
@@ -493,7 +493,7 @@ class _Cli:
                 indent=settings.indent,
                 cleanenv=not settings.preserve_env,
                 debug=settings.debug,
-                dos2unix=settings.dos2unix
+                dos2unix=settings.dos2unix,
             )
             if not settings.debug:
                 tests = self._runcli(
