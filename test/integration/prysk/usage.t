@@ -33,7 +33,8 @@ Usage:
                           Mode which shall be used for coloring the output
                           (default: auto)
     --xunit-file PATH     path to write xUnit XML output (default: None)
-
+    --dos2unix            convert DOS/Windows line endings to UNIX line endings
+                          (default: False)
 
 
 
