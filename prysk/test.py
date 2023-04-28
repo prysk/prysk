@@ -220,7 +220,7 @@ def test(
                 if os.supports_bytes_environ:
                     tmpdir = os.environb[b"TMPDIR"]
                 else:
-                    tmpdir = str.encode(os.environ["TMPDIR"])
+                    tmpdir = os.environ["TMPDIR"].encode()
             except KeyError:
                 pass
             else:
