@@ -226,7 +226,10 @@ def test(
                 out = _escape(out)
 
             try:
-                tmpdir = os.environb[b"TMPDIR"]
+                if os.supports_bytes_environ:
+                    tmpdir = os.environb[b"TMPDIR"]
+                else:
+                    tmpdir = str.encode(os.environ["TMPDIR"])
             except KeyError:
                 pass
             else:
