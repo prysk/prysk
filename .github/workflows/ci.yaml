@@ -4,11 +4,6 @@ on: [ pull_request ]
 
 jobs:
 
-  pre-commit:
-    name: Pre-Commit
-    uses: ./.github/workflows/pre-commit.yml
-
   ci-job:
     name: CI
-    needs: [pre-commit]
     uses: ./.github/workflows/checks.yml

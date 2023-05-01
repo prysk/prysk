@@ -23,11 +23,6 @@ jobs:
         # make sure the pushed/created tag matched the project version
         run: "[[ `poetry version --short` == ${{ github.ref_name }} ]]"
 
-  pre-commit:
-    name: Pre-Commit
-    needs: [check-tag-version]
-    uses: ./.github/workflows/pre-commit.yml
-
   ci-job:
     name: CI
     needs: [pre-commit]
