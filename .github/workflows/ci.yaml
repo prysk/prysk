@@ -3,44 +3,12 @@ name: CI
 on: [ pull_request ]
 
 jobs:
-  build:
 
-    name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
-    runs-on: "${{ matrix.os }}"
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-        python-version:
-          - "3.8"
-          - "3.9"
-          - "3.10"
-          - "3.11"
+  pre-commit:
+    name: Pre-Commit
+    uses: ./.github/workflows/pre-commit.yml
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: ./.github/actions/python-environment
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Dependencies
-        run: |
-          sudo apt-get install -y bash
-          sudo apt-get install -u zsh
-          poetry install
-
-      - name: Verify
-        run: |
-          poetry run python -m nox
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: coverage.lcov
+  ci-job:
+    name: CI
+    needs: [pre-commit]
+    uses: ./.github/workflows/checks.yml
