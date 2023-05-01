@@ -161,8 +161,9 @@ def test_regression_github_issue_169(pytester):
     # we need to make sure the prysk test is executed before the doctest in order to trigger the bug
     prysk_tests = pytester.mkdir("a")
     python_tests = pytester.mkdir("z")
-    shutil.move(prysk_file, prysk_tests)
-    shutil.move(python_file, python_tests)
+    # shutil.move in python 3.8 has issue when passing posix paths
+    shutil.move(str(prysk_file), str(prysk_tests))
+    shutil.move(str(python_file), str(python_tests))
 
     result = pytester.runpytest("--doctest-modules")
     assert result.ret == pytest.ExitCode.OK
