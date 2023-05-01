@@ -21,7 +21,7 @@ from prysk.settings import (
 from prysk.test import runtests
 from prysk.xunit import runxunit
 
-VERSION = "0.14.0"
+VERSION = "0.15.0"
 
 
 class ExitCode:
@@ -190,6 +190,11 @@ class _ArgumentParser:
             action="store",
             metavar="PATH",
             help="path to write xUnit XML output",
+        )
+        parser.add_argument(
+            "--dos2unix",
+            action="store_true",
+            help="convert DOS/Windows line endings to UNIX line endings",
         )
         return parser
 
@@ -488,6 +493,7 @@ class _Cli:
                 indent=settings.indent,
                 cleanenv=not settings.preserve_env,
                 debug=settings.debug,
+                dos2unix=settings.dos2unix,
             )
             if not settings.debug:
                 tests = self._runcli(

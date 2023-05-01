@@ -95,6 +95,7 @@ def test(
     env=None,
     cleanenv=True,
     debug=False,
+    dos2unix=False,
 ):
     r"""Run test lines and return input, output, and diff.
 
@@ -150,6 +151,8 @@ def test(
     :type cleanenv: bool
     :param debug: Whether or not to run in debug mode (don't capture stdout)
     :type debug: bool
+    :param dos2unix: Whether or not to convert all DOS/Windows line endings to UNIX
+    :type debug: bool
     return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -181,6 +184,9 @@ def test(
     i = pos = prepos = -1
     stdin = []
     for i, line in enumerate(lines):
+        # Convert Windows style line endings to UNIX
+        if dos2unix and line.endswith(b"\r\n"):
+            line = line[:-2] + b"\n"
         if not line.endswith(b"\n"):
             line += b"\n"
         refout.append(line)
@@ -210,6 +216,9 @@ def test(
             out, cmd = line.split(salt, 1)
 
         if out:
+            # Convert Windows style line endings to UNIX
+            if dos2unix and out.endswith(b"\r\n"):
+                out = out[:-2] + b"\n"
             if not out.endswith(b"\n"):
                 out += b" (no-eol)\n"
 
@@ -265,7 +274,14 @@ def _debug(cmdline, conline, env, lines, shell):
 
 
 def testfile(
-    path, shell="/bin/sh", indent=2, env=None, cleanenv=True, debug=False, testname=None
+    path,
+    shell="/bin/sh",
+    indent=2,
+    env=None,
+    cleanenv=True,
+    debug=False,
+    testname=None,
+    dos2unix=False,
 ):
     """Run test at path and return input, output, and diff.
 
@@ -313,10 +329,13 @@ def testfile(
             env=env,
             cleanenv=cleanenv,
             debug=debug,
+            dos2unix=dos2unix,
         )
 
 
-def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
+def runtests(
+    paths, tmpdir, shell, indent=2, cleanenv=True, debug=False, dos2unix=False
+):
     """Run tests and yield results.
 
     This yields a sequence of 2-tuples containing the following:
@@ -358,6 +377,7 @@ def runtests(paths, tmpdir, shell, indent=2, cleanenv=True, debug=False):
                     cleanenv=cleanenv,
                     debug=debug,
                     testname=path,
+                    dos2unix=dos2unix,
                 )
 
         yield path, test
