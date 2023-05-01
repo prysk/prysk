@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Documentation
         run: |
-          poetry run nox -s multi-version-docs
+          poetry run nox -s docs
           touch docs/_build/.nojekyll
 
       - name: Deploy
