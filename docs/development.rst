@@ -83,25 +83,59 @@ Creating a release
         * fix findings
         * re-run checks
 
-* Build artifacts
-    - :code:`poetry build`
+* Commit and publish changes as release preparation
 
-* Publish the Release
-    - Release in SCM
-        * Create git tag
-            - :code:`git tag X.Y.Z`
-        * Publish tag
-            - :code:`git push origin x.Y.Z`
-    - Release on GitHub
-        * Publish a Github Release
-            - :code:`gh release create --verify-tag <major>.<minor>.<patch>`
-        * copy paste chang log information into the release
-    - Release on PYPI
-        * :code:`poetry publish`
+* Trigger the Release
 
-* Check for Known Issues
-    - Make sure gh-pages still work
-        * A bug have been observed in cases where :code:`tag == master` is :code:`HEAD`.
+    In order to trigger a release a new tag must be pushed to Github.
+    For further details see: `.github/workflows/ci-cd.yml`.
+
+
+    #. Create a local tag with the appropriate version number
+
+        .. code-block:: shell
+
+            git tag x.y.z
+
+    #. Push the tag to Github
+
+        .. code-block:: shell
+
+            git push origin x.y.z
+
+What to do if the release failed?
+_________________________________
+
+The release failed during pre-release checks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. Delete the local tag
+
+    .. code-block:: shell
+
+        git tag -d x.y.z
+
+#. Delete the remote tag
+
+    .. code-block:: shell
+
+        git push --delete origin x.y.z
+
+#. Fix the issue(s) which lead to the failing checks
+#. Start the release process from the beginning
+
+
+One of the release steps failed (Partial Release)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. Check the Github action/workflow to see which steps failed
+#. Finish or redo the failed release steps manually
+
+.. note:: Example
+
+    **Scenario**: Publishing of the release on Github was successfully but during the PyPi release, the upload step got interrupted.
+
+    **Solution**: Manually push the package to PyPi
+
 
 .. _nox: https://nox.thea.codes/en/stable/
 .. _Git: http://git-scm.com/
