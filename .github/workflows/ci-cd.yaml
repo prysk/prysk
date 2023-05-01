@@ -25,6 +25,7 @@ jobs:
 
   ci-job:
     name: CI
+    needs: [ check-tag-version ]
     uses: ./.github/workflows/checks.yml
 
   cd-job:
