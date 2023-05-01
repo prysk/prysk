@@ -25,7 +25,6 @@ jobs:
 
   ci-job:
     name: CI
-    needs: [pre-commit]
     uses: ./.github/workflows/checks.yml
 
   cd-job:
