@@ -1,5 +1,8 @@
 Unreleased
 -----------------------------------------------------
+
+Version 0.15.1 (May. 1, 2023)
+-----------------------------------------------------
 * Prevent prysk from crashing on platforms which do not support :code:`os.environb`
 * Update dependencies
 
