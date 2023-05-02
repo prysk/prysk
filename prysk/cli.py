@@ -343,21 +343,14 @@ class _Cli:
                         diff = []
                         for line in origdiff:
                             _line = line.decode("utf-8")
-                            _line = (
-                                f"[green]{_line}[/green]"
-                                if _line.startswith("+")
-                                else _line
-                            )
-                            _line = (
-                                f"[red]{_line}[/red]"
-                                if _line.startswith("-")
-                                else _line
-                            )
-                            _line = (
-                                f"[magenta]{_line}[/magenta]"
-                                if _line.startswith("@")
-                                else _line
-                            )
+                            if _line.startswith("+"):
+                              _line = f"[green]{_line}[/green]"
+                            elif _line.startswith("-"):
+                              _line = f"[red]{_line}[/red]"
+                            elif _line.startswith("@"):
+                              _line = f"[magenta]{_line}[/magenta]"
+                            else:
+                              _line = f"[white]{_line}[/white]"
                             self.stdout(_line, end="")
                             diff.append(line)
 
