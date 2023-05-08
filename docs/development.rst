@@ -21,7 +21,7 @@ installed.
 Python
 ______
 * python >= 3.7
-* poetry
+* `poetry <https://python-poetry.org/>`_
 
 Shells
 ______
@@ -29,36 +29,58 @@ ______
 * bash
 * zsh
 
-If you have these dependencies all setup, just run a
+If you have installed all the dependencies from above, run the following commands
+within the root folder of the project.
 
 .. code-block:: console
 
     poetry install
+    poetry shell
+
+Now you should be good to go!
 
 
-within the root folder of the project. Now you should be good to go!
+Nox (Task Runner)
++++++++++++++++++
+`Nox <nox>`_ is the task runner used for automation within this project.
+The tasks definitions can be found in the file :code:`noxfile.py`.
+The following commands should help you to get you started:
 
-Nox
-++++
-Mostly all task you will need to take care of are automated
-using nox_. So if you want to run all checks and build
-the documentation etc. just run:
+Execute all checks and build the documentation
+______________________________________________
 
 .. code-block:: console
 
     nox
 
-To get a list of all available targets run:
+Get a list of all available targets run
+_______________________________________
 
 .. code-block:: console
 
     nox --list
 
-For running a specific target run:
+Run a specific target
+_____________________
 
 .. code-block:: console
 
     nox -s <target>
+
+Run all integration tests
+_________________________
+
+.. code-block:: console
+
+    nox -s integration
+
+Run the integration tests for :code:`bash`
+__________________________________________
+
+.. code-block:: console
+
+    nox -s "integration(shell='bash')"
+
 
 Creating a release
 ++++++++++++++++++
