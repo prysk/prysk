@@ -29,7 +29,7 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          branch: gh-pages
+          branch: github-pages
           folder: ./docs/_build
           git-config-name: Nicola Coretti
           git-config-email: nico.coretti@gmail.com
