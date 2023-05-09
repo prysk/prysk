@@ -1,0 +1,409 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Prysk" href="readme.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>Prysk</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">Prysk </div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">Prysk </span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Prysk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytest-plugin.html">Pytest-Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
+</ul>
+
+</div></div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="prysk">
+<h1>Prysk<a class="headerlink" href="#prysk" title="Permalink to this heading">#</a></h1>
+<a class="reference external image-reference" href="https://github.com/Nicoretti/prysk/actions"><img alt="https://img.shields.io/github/actions/workflow/status/nicoretti/prysk/ci.yaml" src="https://img.shields.io/github/actions/workflow/status/nicoretti/prysk/ci.yaml" /></a>
+<a class="reference external image-reference" href="https://coveralls.io/github/Nicoretti/prysk"><img alt="https://img.shields.io/coverallsCoverage/github/Nicoretti/prysk" src="https://img.shields.io/coverallsCoverage/github/Nicoretti/prysk" /></a>
+<a class="reference external image-reference" href="https://pycqa.github.io/isort/"><img alt="https://img.shields.io/badge/imports-isort-ef8336.svg" src="https://img.shields.io/badge/imports-isort-ef8336.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/psf/black"><img alt="https://img.shields.io/badge/code%20style-black-000000.svg" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/prysk/"><img alt="https://img.shields.io/pypi/v/prysk" src="https://img.shields.io/pypi/v/prysk" /></a>
+<a class="reference external image-reference" href="https://nicoretti.github.io/prysk/"><img alt="https://img.shields.io/badge/docs-available-blue.svg" src="https://img.shields.io/badge/docs-available-blue.svg" /></a>
+<p>Prysk is a fork of the popular snapshot testing tool <a class="reference external" href="https://bitheap.org/cram">Cram</a>.
+Even though <a class="reference external" href="https://bitheap.org/cram">Cram</a> is pretty complete and mature for everyday use,
+Prysk wants to continue pushing its development forward.</p>
+<p>Prysk tests look like snippets of interactive shell sessions. Prysk runs
+each command and compares the command output in the test with the
+command’s actual output.</p>
+<p>Here’s a snippet from <a class="reference external" href="https://github.com/Nicoretti/prysk/blob/master/test/integration/prysk/usage.t">Prysk’s own test suite</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Set up prysk alias and example tests:</span>
+
+<span class="gp">  $ </span>.<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TESTDIR</span><span class="s2">&quot;</span>/setup.sh
+
+<span class="go">Usage:</span>
+
+<span class="gp">  $ </span>prysk<span class="w"> </span>-h
+<span class="go">  [Uu]sage: prysk \[OPTIONS\] TESTS\.\.\. (re)</span>
+
+<span class="go">  [Oo]ptions: (re)</span>
+<span class="go">    -h, --help          show this help message and exit</span>
+<span class="go">    -V, --version       show version information and exit</span>
+<span class="go">    -q, --quiet         don&#39;t print diffs</span>
+<span class="go">    -v, --verbose       show filenames and test status</span>
+<span class="go">    -i, --interactive   interactively merge changed test output</span>
+<span class="go">    -d, --debug         write script output directly to the terminal</span>
+<span class="go">    -y, --yes           answer yes to all questions</span>
+<span class="go">    -n, --no            answer no to all questions</span>
+<span class="go">    -E, --preserve-env  don&#39;t reset common environment variables</span>
+<span class="go">    --keep-tmpdir       keep temporary directories</span>
+<span class="go">    --shell=PATH        shell to use for running tests (default: /bin/sh)</span>
+<span class="go">    --shell-opts=OPTS   arguments to invoke shell with</span>
+<span class="go">    --indent=NUM        number of spaces to use for indentation (default: 2)</span>
+<span class="go">    --xunit-file=PATH   path to write xUnit XML output</span>
+</pre></div>
+</div>
+<p>The format in a nutshell:</p>
+<ul class="simple">
+<li><p>Prysk tests use the <code class="docutils literal notranslate"><span class="pre">.t</span></code> file extension.</p></li>
+<li><p>Lines beginning with two spaces, a dollar sign (<code class="docutils literal notranslate"><span class="pre">$</span></code>), and a space are run
+in the shell.</p></li>
+<li><p>Lines beginning with two spaces, a greater than sign (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>), and a space
+allow multi-line commands.</p></li>
+<li><p>All other lines beginning with two spaces are considered command
+output.</p></li>
+<li><p>Output lines ending with a space and the keyword <code class="docutils literal notranslate"><span class="pre">(re)</span></code> are
+matched as <a class="reference external" href="https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions">Perl-compatible regular expressions</a>.</p></li>
+<li><p>Lines ending with a space and the keyword <code class="docutils literal notranslate"><span class="pre">(glob)</span></code> are matched
+with a glob-like syntax. The only special characters supported are
+<code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">?</span></code>. Both characters can be escaped using <code class="docutils literal notranslate"><span class="pre">\</span></code>, and the
+backslash can be escaped itself.</p></li>
+<li><p>Output lines ending with either of the above keywords are always
+first matched literally with actual command output.</p></li>
+<li><p>Lines ending with a space and the keyword <code class="docutils literal notranslate"><span class="pre">(no-eol)</span></code> will match
+actual output that doesn’t end in a newline.</p></li>
+<li><p>Actual output lines containing unprintable characters are escaped
+and suffixed with a space and the keyword <code class="docutils literal notranslate"><span class="pre">(esc)</span></code>. Lines matching
+unprintable output must also contain the keyword.</p></li>
+<li><p>Anything else is a comment.</p></li>
+</ul>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+<p>Prysk will print a dot for each passing test. If a test fails, a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Diff#Unified_format">unified context diff</a> is printed showing the test’s expected output
+and the actual output. Skipped tests (empty tests and tests that exit
+with return code <code class="docutils literal notranslate"><span class="pre">80</span></code>) are marked with <code class="docutils literal notranslate"><span class="pre">s</span></code> instead of a dot.</p>
+<p>For example, if we run Prysk on <a class="reference external" href="https://github.com/nicoretti/prysk/tree/master/examples">its own example tests</a>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>.s.!
+<span class="gd">--- examples/fail.t</span>
+<span class="gi">+++ examples/fail.t.err</span>
+<span class="gu">@@ -3,21 +3,22 @@</span>
+<span class="w"> </span>  $ echo 1
+<span class="w"> </span>  1
+<span class="w"> </span>  $ echo 1
+<span class="gd">-  2</span>
+<span class="gi">+  1</span>
+<span class="w"> </span>  $ echo 1
+<span class="w"> </span>  1
+
+<span class="w"> </span>Invalid regex:
+
+<span class="w"> </span>  $ echo 1
+<span class="gd">-  +++ (re)</span>
+<span class="gi">+  1</span>
+
+<span class="w"> </span>Offset regular expression:
+
+<span class="w"> </span>  $ printf &#39;foo\nbar\nbaz\n\n1\nA\n@\n&#39;
+<span class="w"> </span>  foo
+<span class="gi">+  bar</span>
+<span class="w"> </span>  baz
+
+<span class="w"> </span>  \d (re)
+<span class="w"> </span>  [A-Z] (re)
+<span class="gd">-  #</span>
+<span class="gi">+  @</span>
+s.
+# Ran 6 tests, 2 skipped, 1 failed.
+</pre></div>
+</div>
+<p>Prysk will also write the test with its actual output to
+<code class="docutils literal notranslate"><span class="pre">examples/fail.t.err</span></code>, allowing you to use other diff tools. This
+file is automatically removed the next time the test passes.</p>
+<p>When you’re first writing a test, you might just write the commands
+and run the test to see what happens. If you run Prysk with <code class="docutils literal notranslate"><span class="pre">-i</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--interactive</span></code>, you’ll be prompted to merge the actual output back
+into the test. This makes it easy to quickly prototype new tests.</p>
+<p>Is the same as invoking Prysk with <code class="docutils literal notranslate"><span class="pre">--verbose</span></code> and <code class="docutils literal notranslate"><span class="pre">--indent=4</span></code>.</p>
+<p>Note that the following environment variables are reset before tests
+are run:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TMPDIR</span></code>, <code class="docutils literal notranslate"><span class="pre">TEMP</span></code>, and <code class="docutils literal notranslate"><span class="pre">TMP</span></code> are set to the test runner’s
+<code class="docutils literal notranslate"><span class="pre">tmp</span></code> directory. In test output, occurrences of this directory are
+replaced by <code class="docutils literal notranslate"><span class="pre">$TMPDIR</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LANG</span></code>, <code class="docutils literal notranslate"><span class="pre">LC_ALL</span></code>, and <code class="docutils literal notranslate"><span class="pre">LANGUAGE</span></code> are set to <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TZ</span></code> is set to <code class="docutils literal notranslate"><span class="pre">GMT</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">COLUMNS</span></code> is set to <code class="docutils literal notranslate"><span class="pre">80</span></code>. (Note: When using <code class="docutils literal notranslate"><span class="pre">--shell=zsh</span></code>,
+this cannot be reset. It will reflect the actual terminal’s width.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CDPATH</span></code> and <code class="docutils literal notranslate"><span class="pre">GREP_OPTIONS</span></code> are set to an empty string.</p></li>
+</ul>
+<p>Prysk also provides the following environment variables to tests:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PRYSK_TEMP</span></code>, set to the test runner’s temporary directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TESTDIR</span></code>, set to the directory containing the test file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TESTFILE</span></code>, set to the basename of the current test file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TESTSHELL</span></code>, set to the value specified by <code class="docutils literal notranslate"><span class="pre">--shell</span></code>.</p></li>
+</ul>
+<p>Also note that care should be taken with commands that close the test
+shell’s <code class="docutils literal notranslate"><span class="pre">stdin</span></code>. For example, if you’re trying to invoke <code class="docutils literal notranslate"><span class="pre">ssh</span></code> in
+a test, try adding the <code class="docutils literal notranslate"><span class="pre">-n</span></code> option to prevent it from closing
+<code class="docutils literal notranslate"><span class="pre">stdin</span></code>. Similarly, if you invoke a daemon process that inherits
+<code class="docutils literal notranslate"><span class="pre">stdout</span></code> and fails to close it, it may cause Prysk to hang while
+waiting for the test shell’s <code class="docutils literal notranslate"><span class="pre">stdout</span></code> to be fully closed.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="readme.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Prysk</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Brodie Rao, Nicola Coretti &amp; Contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Prysk</a><ul>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>
