@@ -5,6 +5,8 @@ on:
       - master
     tags:
       - "**"
+  workflow_call:
+
 jobs:
   build-and-deploy:
     name: ⚙️ Build & Deploy
