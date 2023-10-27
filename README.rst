@@ -56,6 +56,8 @@ Here's a snippet from `Prysk's own test suite`_:
         --shell-opts=OPTS   arguments to invoke shell with
         --indent=NUM        number of spaces to use for indentation (default: 2)
         --xunit-file=PATH   path to write xUnit XML output
+        --dos2unix          convert DOS/Windows line endings to UNIX line endings
+        --color             mode which shall be used for coloring the output
 
 The format in a nutshell:
 
