@@ -507,7 +507,7 @@ class _Cli:
         else:
             answer = None
 
-        self._setup() # sets self.tmpdir
+        self._setup()  # sets self.tmpdir
 
         try:
             tests = runtests(
