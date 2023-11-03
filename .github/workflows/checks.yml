@@ -4,13 +4,13 @@ on: workflow_call
 
 jobs:
   build:
-
     name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
     runs-on: "${{ matrix.os }}"
     strategy:
       matrix:
         os:
           - ubuntu-latest
+          - windows-latest
         python-version:
           - "3.8"
           - "3.9"
