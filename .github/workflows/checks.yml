@@ -27,11 +27,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Dependencies
+        if: matrix.os != 'windows-latest'
         run: |
           sudo apt-get install -y bash
           sudo apt-get install -u zsh
 
       - name: Verify
+        shell: bash
         run: |
           poetry run python -m nox
 
