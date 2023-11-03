@@ -4,13 +4,13 @@ import configparser
 import os
 import shlex
 import shutil
+import stat
 import sys
 import tempfile
 from collections import defaultdict
 from functools import partial
 from pathlib import Path
 from shutil import which
-import stat
 
 from rich.console import Console
 
