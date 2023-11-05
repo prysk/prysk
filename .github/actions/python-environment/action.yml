@@ -29,5 +29,5 @@ runs:
         poetry-version: ${{ inputs.poetry-version }}
 
     - name: Poetry install
-      run: poetry install -E pytest-prysk
+      run: poetry install -E pytest-plugin
       shell: bash
