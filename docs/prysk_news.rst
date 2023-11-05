@@ -4,6 +4,8 @@ Unreleased
 Internal
 _________
 * Fix typo in test
+* Relock dev dependencies
+* Update dependabot configuration to do group updates
 
 
 Version 0.15.2 (Nov. 4, 2023)
