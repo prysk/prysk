@@ -4,6 +4,7 @@ import configparser
 import os
 import shlex
 import shutil
+import stat
 import sys
 import tempfile
 from collections import defaultdict
@@ -21,7 +22,7 @@ from prysk.settings import (
 from prysk.test import runtests
 from prysk.xunit import runxunit
 
-VERSION = "0.15.1"
+VERSION = "0.15.2"
 
 
 class ExitCode:
@@ -257,6 +258,7 @@ class _Cli:
         self._stderr_console = Console(file=sys.stderr)
         self._argparser = _ArgumentParser.create_parser()
         self._default_color_system = self._stdout_console.color_system
+        self.tmpdir = None
 
     @property
     def stdout(self):
@@ -437,6 +439,33 @@ class _Cli:
         settings = merge_settings(argument_settings, configuration_settings)
         return settings
 
+    def _setup(self):
+        """
+        Sets up a directory where tests will run (called `tmpdir`).
+        Also set $TMPDIR, $TMP, and $TMP environment variables to a `tmp` dir inside the tmpdir.
+        """
+        self.tmpdir = os.environ["PRYSK_TEMP"] = tempfile.mkdtemp("", "prysk-tests-")
+        self.tmpdir = Path(self.tmpdir)
+        proc_tmp = self.tmpdir / "tmp"
+        for name in ("TMPDIR", "TEMP", "TMP"):
+            os.environ[name] = f"{proc_tmp}"
+
+        os.mkdir(proc_tmp)
+
+    def _cleanup(self):
+        """
+        A wrapper for #shutil.rmtree() that can try to remove write protection
+        if removing fails, if enabled.
+        """
+        if self.tmpdir is None:
+            return
+
+        def on_rm_error(func, path, exc_info):
+            os.chmod(path, stat.S_IWRITE)
+            os.unlink(path)
+
+        shutil.rmtree(self.tmpdir, onerror=on_rm_error)
+
     def main(self, argv=None):
         try:
             settings = self._load_settings(argv)
@@ -478,17 +507,12 @@ class _Cli:
         else:
             answer = None
 
-        tmpdir = os.environ["PRYSK_TEMP"] = tempfile.mkdtemp("", "prysk-tests-")
-        tmpdir = Path(tmpdir)
-        proc_tmp = tmpdir / "tmp"
-        for name in ("TMPDIR", "TEMP", "TMP"):
-            os.environ[name] = f"{proc_tmp}"
+        self._setup()  # sets self.tmpdir
 
-        os.mkdir(proc_tmp)
         try:
             tests = runtests(
                 settings.tests,
-                tmpdir,
+                self.tmpdir,
                 shell,
                 indent=settings.indent,
                 cleanenv=not settings.preserve_env,
@@ -521,6 +545,6 @@ class _Cli:
             return ExitCode.TEST_FAILED if failed else ExitCode.SUCCESS
         finally:
             if settings.keep_tmpdir:
-                self.stdout(f"# Kept temporary directory: [blue]{tmpdir}[/blue]")
+                self.stdout(f"# Kept temporary directory: [blue]{self.tmpdir}[/blue]")
             else:
-                shutil.rmtree(tmpdir)
+                self._cleanup()

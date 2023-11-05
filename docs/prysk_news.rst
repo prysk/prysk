@@ -1,5 +1,21 @@
 Unreleased
+----------
+
+Internal
+_________
+* Fix typo in test
+* Relock dev dependencies
+* Update dependabot configuration to do group updates
+
+
+Version 0.15.2 (Nov. 4, 2023)
 -----------------------------------------------------
+* Add error handling for cleaning up files on Windows
+
+Internal
+_________
+* Add github issue templates
+* Update lockfile
 
 Version 0.15.1 (May. 1, 2023)
 -----------------------------------------------------
