@@ -1,5 +1,6 @@
-Unreleased
+Version 0.15.2 (Nov. 4, 2023)
 -----------------------------------------------------
+* Add error handling for cleaning up files on Windows
 
 Internal
 _________
