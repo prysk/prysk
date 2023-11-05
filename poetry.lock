@@ -1533,9 +1533,9 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-pytest-prysk = ["pytest-prysk"]
+pytest-plugin = ["pytest-prysk"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0.0"
-content-hash = "6143773e5f00f66ef03f2250e063934be4f0d603f8ac63fa95c6575cf8800a22"
+content-hash = "87ed229572522ac517a4e14ca4c1a5f949fc68c3e52573b6428605ae6b328c4e"
