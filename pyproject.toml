@@ -64,7 +64,7 @@ rich = "^13.3.1"
 pytest-prysk = { version = "^0.1.0", optional = true }
 
 [tool.poetry.extras]
-pytest-prysk = ["pytest-prysk"]
+pytest-plugin = ["pytest-prysk"]
 
 [tool.poetry.dev-dependencies]
 tomli = "^2.0.1"
