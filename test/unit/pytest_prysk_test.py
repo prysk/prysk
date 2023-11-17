@@ -12,7 +12,7 @@ from pytest_prysk import (
 pytest_plugins = "pytester"
 
 
-def test_environment_contex_manager_adds_variables():
+def test_environment_context_manager_adds_variables():
     env_vars = {"FOO": "BAR"}
     with environment(env_vars) as env:
         for var in env_vars:
