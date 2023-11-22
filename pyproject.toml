@@ -39,7 +39,7 @@ keywords = [
     "functional tests",
 ]
 repository = "https://github.com/Nicoretti/prysk"
-homepage = "https://nicoretti.github.io/prysk/"
+homepage = "https://www.prysk.net/"
 include = [
     ".coveragerc",
     "noxfile.py",
