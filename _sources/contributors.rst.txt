@@ -29,6 +29,7 @@ So without further ado, the contributors:
 * Fahmi Ghediri
 * Larsson Rasmus
 * Kian-Meng Ang
+* Christoph Weinsheimer
 
 The most up to date list you'll find on Github_ though.
 

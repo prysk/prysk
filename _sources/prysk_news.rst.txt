@@ -6,6 +6,7 @@ _________
 * Fix typo in test
 * Relock dev dependencies
 * Update dependabot configuration to do group updates
+* Update contributors list
 
 
 Version 0.15.2 (Nov. 4, 2023)
