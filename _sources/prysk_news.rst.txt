@@ -1,6 +1,9 @@
 Unreleased
 ----------
 
+* Extract pytest plugin into it's own package, for more details see `this <https://github.com/prysk/prysk/issues/190#issuecomment-1559998562>`_ comment.
+    * Fixes `#190 <https://github.com/prysk/prysk/issues/190>`_
+
 Internal
 _________
 * Fix typo in test
