@@ -25,25 +25,6 @@ _SKIP = 80
 _IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
 
 
-def is_hidden(path):
-    """Check if a path (file/dir) is hidden or not."""
-
-    def _is_hidden(part):
-        return (
-            part.startswith(".")
-            and not part == "."
-            and not part.startswith("..")
-            and not part.startswith("./")
-        )
-
-    return any(map(_is_hidden, path.parts))
-
-
-def is_testfile(path):
-    """Check if path is a valid prysk test file"""
-    return path.is_file() and path.suffix == ".t" and not is_hidden(path)
-
-
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
     escape_sub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
@@ -57,9 +38,13 @@ def _findtests(paths):
 
     paths = list(map(Path, paths))
 
-    def is_test_dir(path):
-        """Check if the path is a valid prysk test dir"""
-        return path.is_dir() and not is_hidden(path)
+    def is_hidden(path):
+        """Check if a path (file/dir) is hidden or not."""
+        return any(map(lambda part: part.startswith("."), path.parts))
+
+    def is_testfile(path):
+        """Check if path is a valid prysk test file"""
+        return path.suffix == ".t" and not is_hidden(path)
 
     def remove_duplicates(path):
         """Stable duplication removal"""
@@ -68,10 +53,16 @@ def _findtests(paths):
     def collect(paths):
         """Collect all test files compliant with cram collection order"""
         for path in paths:
-            if is_testfile(path):
+            if path.is_dir():
+                yield from sorted(
+                    (
+                        f
+                        for f in path.rglob("*.t")
+                        if f.is_file() and is_testfile(f.relative_to(path))
+                    )
+                )
+            else:
                 yield path
-            if is_test_dir(path):
-                yield from sorted((f for f in path.rglob("*.t") if is_testfile(f)))
 
     yield from remove_duplicates(collect(paths))
 
