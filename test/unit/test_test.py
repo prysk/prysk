@@ -32,7 +32,7 @@ def test_findtests_ignores_hidden_files(tmp_path):
     assert tuple(_findtests([tmp_path])) == expected
 
 
-def test_findtests_ignores_folders(tmp_path):
+def test_findtests_ignores_hidden_folders(tmp_path):
     hidden_directory = create_directory(tmp_path, ".hidden")
     _ = create_file(hidden_directory, "visible.t", "")
     expected = tuple()
