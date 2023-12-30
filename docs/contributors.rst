@@ -30,6 +30,7 @@ So without further ado, the contributors:
 * Larsson Rasmus
 * Kian-Meng Ang
 * Christoph Weinsheimer
+* Tomas Janousek
 
 The most up to date list you'll find on Github_ though.
 
