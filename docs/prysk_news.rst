@@ -6,7 +6,7 @@ Version 0.17.0 (Dec. 30, 2023)
 
 * Fix prysk test file lookup for explicitly specified hidden files/directories
     * Fixes `#224 <https://github.com/prysk/prysk/issues/224>`_
-* Update code:`pytest-prysk` dependency requirement
+* Update :code:`pytest-prysk` dependency requirement
 
 Version 0.16.0 (Nov. 24, 2023)
 -------------------------------
