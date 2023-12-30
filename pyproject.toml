@@ -61,7 +61,7 @@ prysk = "prysk:main"
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0.0"
 rich = "^13.3.1"
-pytest-prysk = { version = "^0.1.0", optional = true }
+pytest-prysk = { version = "^0.2.0", optional = true }
 
 [tool.poetry.extras]
 pytest-plugin = ["pytest-prysk"]
