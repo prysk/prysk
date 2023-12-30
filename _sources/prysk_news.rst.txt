@@ -1,6 +1,8 @@
 Unreleased
 ----------
 
+* Fix prysk test file lookup for explicitly specified hidden files/directories
+    * Fixes `#224 <https://github.com/prysk/prysk/issues/224>`_
 
 Version 0.16.0 (Nov. 24, 2023)
 -------------------------------
