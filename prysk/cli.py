@@ -22,7 +22,7 @@ from prysk.settings import (
 from prysk.test import runtests
 from prysk.xunit import runxunit
 
-VERSION = "0.16.0"
+VERSION = "0.17.0"
 
 
 class ExitCode:
