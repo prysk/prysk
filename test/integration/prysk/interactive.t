@@ -13,10 +13,10 @@ Interactive mode (don't merge):
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
   -  foo
-  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+  \+  \\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\x0b\\x0c\\x0e\\x0f\\x10\\x11\\x12 \(esc\) (re)
      $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   -  bar
-  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  \+  \\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f ' \(esc\) (re)
    
    Wrong output and bad regexes:
    
@@ -60,10 +60,10 @@ Interactive mode (merge):
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
   -  foo
-  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+  \+  \\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\x0b\\x0c\\x0e\\x0f\\x10\\x11\\x12 \(esc\) (re)
      $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   -  bar
-  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  \+  \\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f ' \(esc\) (re)
    
    Wrong output and bad regexes:
    
@@ -107,10 +107,10 @@ Verbose interactive mode (answer manually and don't merge):
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
   -  foo
-  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+  \+  \\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\x0b\\x0c\\x0e\\x0f\\x10\\x11\\x12 \(esc\) (re)
      $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   -  bar
-  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  \+  \\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f ' \(esc\) (re)
    
    Wrong output and bad regexes:
    
@@ -148,10 +148,10 @@ Verbose interactive mode (answer manually and don't merge):
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
   -  foo
-  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+  \+  \\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\x0b\\x0c\\x0e\\x0f\\x10\\x11\\x12 \(esc\) (re)
      $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   -  bar
-  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  \+  \\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f ' \(esc\) (re)
    
    Wrong output and bad regexes:
    
@@ -193,10 +193,10 @@ Verbose interactive mode (answer manually and merge):
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
   -  foo
-  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+  \+  \\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\x0b\\x0c\\x0e\\x0f\\x10\\x11\\x12 \(esc\) (re)
      $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   -  bar
-  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  \+  \\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f ' \(esc\) (re)
    
    Wrong output and bad regexes:
    
@@ -248,10 +248,10 @@ Test missing patch(1) and patch(1) error:
    
      $ printf '\00\01\02\03\04\05\06\07\010\011\013\014\016\017\020\021\022\n'
   -  foo
-  +  \x00\x01\x02\x03\x04\x05\x06\x07\x08\t\x0b\x0c\x0e\x0f\x10\x11\x12 (esc)
+  \+  \\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\x0b\\x0c\\x0e\\x0f\\x10\\x11\\x12 \(esc\) (re)
      $ printf '\023\024\025\026\027\030\031\032\033\034\035\036\037\040\047\n'
   -  bar
-  +  \x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f ' (esc)
+  \+  \\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f ' \(esc\) (re)
    
    Wrong output and bad regexes:
    
