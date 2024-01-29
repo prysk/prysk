@@ -22,15 +22,12 @@ from prysk.process import (
 __all__ = ["test", "testfile", "runtests"]
 
 _SKIP = 80
-_IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
+_IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x1f\x7f-\xff]").search
 
 
 def _escape(s):
     """Like the string-escape codec, but doesn't escape quotes"""
-    escape_sub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
-    escape_map = dict((bytes([i]), rb"\x%02x" % i) for i in range(256))
-    escape_map.update({b"\\": b"\\\\", b"\r": rb"\r", b"\t": rb"\t"})
-    return escape_sub(lambda m: escape_map[m.group(0)], s[:-1]) + b" (esc)\n"
+    return s.decode("latin1").encode("unicode_escape") + b" (esc)"
 
 
 def _findtests(paths):
@@ -178,7 +175,7 @@ def test(
         # Convert Windows style line endings to UNIX
         if dos2unix and line.endswith(b"\r\n"):
             line = line[:-2] + b"\n"
-        if not line.endswith(b"\n"):
+        elif not line.endswith(b"\n"):
             line += b"\n"
         refout.append(line)
         if line.startswith(cmdline):
@@ -209,9 +206,11 @@ def test(
         if out:
             # Convert Windows style line endings to UNIX
             if dos2unix and out.endswith(b"\r\n"):
-                out = out[:-2] + b"\n"
-            if not out.endswith(b"\n"):
-                out += b" (no-eol)\n"
+                out = out[:-2]
+            elif out.endswith(b"\n"):
+                out = out[:-1]
+            else:
+                out += b" (no-eol)"
 
             if _IS_ESCAPING_NEEDED(out):
                 out = _escape(out)
@@ -223,7 +222,7 @@ def test(
             else:
                 out = re.sub(re.escape(tmpdir), b"$TMPDIR", out)
 
-            postout.append(indent + out)
+            postout.append(indent + out + b"\n")
 
         if cmd:
             ret = int(cmd.split()[1])
