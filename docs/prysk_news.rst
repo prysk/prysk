@@ -1,3 +1,27 @@
+Unreleased
+----------
+
+Version 0.17.0 (Dec. 30, 2023)
+-------------------------------
+
+* Fix prysk test file lookup for explicitly specified hidden files/directories
+    * Fixes `#224 <https://github.com/prysk/prysk/issues/224>`_
+* Update :code:`pytest-prysk` dependency requirement
+
+Version 0.16.0 (Nov. 24, 2023)
+-------------------------------
+
+* Extract pytest plugin into it's own package, for more details see `this <https://github.com/prysk/prysk/issues/190#issuecomment-1559998562>`_ comment.
+    * Fixes `#190 <https://github.com/prysk/prysk/issues/190>`_
+
+Internal
+_________
+* Fix typo in test
+* Relock dev dependencies
+* Update dependabot configuration to do group updates
+* Update contributors list
+
+
 Version 0.15.2 (Nov. 4, 2023)
 -----------------------------------------------------
 * Add error handling for cleaning up files on Windows

@@ -34,7 +34,7 @@ Test with Latin-1 encoding:
   @@ -1,2 +1,2 @@
      $ printf "hola se\361or\n"
   -  hey
-  +  hola se\xf1or (esc)
+  \+  hola se\\xf1or \(esc\) (re)
   
   # Ran 2 tests, 0 skipped, 1 failed.
   [1]
@@ -58,7 +58,7 @@ Test with UTF-8 encoding:
   @@ -1,2 +1,2 @@
      $ printf "hola se\303\261or\n"
   -  hey
-  +  hola se\xc3\xb1or (esc)
+  \+  hola se\\xc3\\xb1or \(esc\) (re)
   
   # Ran 2 tests, 0 skipped, 1 failed.
   [1]
