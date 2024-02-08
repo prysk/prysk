@@ -230,7 +230,9 @@ Verbose interactive mode (answer manually and merge):
 
 Test missing patch(1) and patch(1) error:
 
-  $ PATH=. prysk -i examples/fail.t
+  $ ln -s $(command -v printf) $PWD
+  $ ln -s $(command -v echo) $PWD
+  $ PATH=$PWD prysk -i examples/fail.t
   patch(1) required for -i
   [2]
   $ cat > patch <<EOF
@@ -239,7 +241,7 @@ Test missing patch(1) and patch(1) error:
   > exit 1
   > EOF
   $ chmod +x patch
-  $ PATH=. prysk -y -i examples/fail.t
+  $ PATH=$PWD prysk -y -i examples/fail.t
   !
   --- examples/fail.t
   +++ examples/fail.t.err
