@@ -1,6 +1,15 @@
 Unreleased
 ----------
 
+Version 0.18.0 (Feb. 10, 2024)
+-------------------------------
+
+Internal
+_________
+* Relock dependencies
+* Fixes to prysk integration tests
+* Update contributors
+
 Version 0.17.0 (Dec. 30, 2023)
 -------------------------------
 
