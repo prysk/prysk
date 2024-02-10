@@ -229,9 +229,11 @@ Verbose interactive mode (answer manually and merge):
   $ mv examples/fail.t.orig examples/fail.t
 
 Test missing patch(1) and patch(1) error:
-
+# NOTE: Make sure system `printf` is used if no shell built in is available 
+#       For more details see also: https://github.com/prysk/prysk/issues/230
   $ ln -s $(command -v printf) $PWD
   $ ln -s $(command -v echo) $PWD
+
   $ PATH=$PWD prysk -i examples/fail.t
   patch(1) required for -i
   [2]
