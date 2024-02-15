@@ -40,16 +40,16 @@ keywords = [
 repository = "https://github.com/Nicoretti/prysk"
 homepage = "https://www.prysk.net/"
 include = [
-    ".coveragerc",
-    "noxfile.py",
-    "poetry.lock",
-    "*.rst",
-    "*.txt",
-    "*.toml",
-    "docs/*",
-    "contrib/*",
-    "scripts/*",
-    "examples/*",
+    { path = ".coveragerc", format = "sdist" },
+    { path = "noxfile.py", format = "sdist" },
+    { path = "poetry.lock", format = "sdist" },
+    { path = "*.rst", format = "sdist" },
+    { path = "*.txt", format = "sdist" },
+    { path = "*.toml", format = "sdist" },
+    { path = "docs/*", format = "sdist" },
+    { path = "contrib/*", format = "sdist" },
+    { path = "scripts/*", format = "sdist" },
+    { path = "examples/*", format = "sdist" },
 ]
 exclude = [
     "contrib/PKGBUILD",
