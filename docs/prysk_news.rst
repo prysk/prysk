@@ -1,6 +1,14 @@
 Unreleased
 ----------
 
+* Fix cluttering site-packages root (`#239 <https://github.com/prysk/prysk/pull/239>`_).
+
+  ❤️ Big thanks to **Haelwenn Monnier** for the PR!
+
+Internal
+_________
+* Relock dependencies
+
 Version 0.18.0 (Feb. 10, 2024)
 -------------------------------
 
