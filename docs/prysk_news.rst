@@ -9,6 +9,7 @@ Internal
 _________
 * Relock dependencies
 * Fix outdated project reference
+* Update developer documentation
 
 Version 0.18.0 (Feb. 10, 2024)
 -------------------------------

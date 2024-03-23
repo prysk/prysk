@@ -20,7 +20,7 @@ installed.
 
 Python
 ______
-* python >= 3.7
+* python >= 3.8
 * `poetry <https://python-poetry.org/>`_
 
 Shells
