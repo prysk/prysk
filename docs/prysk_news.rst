@@ -1,6 +1,9 @@
 Unreleased
 ----------
 
+Version 0.19.0 (March. 23, 2024)
+-------------------------------
+
 * Fix cluttering site-packages root (`#239 <https://github.com/prysk/prysk/pull/239>`_).
 
   ❤️ Big thanks to **Haelwenn Monnier** for the PR!

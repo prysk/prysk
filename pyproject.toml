@@ -9,7 +9,7 @@ name = "prysk"
 packages = [
     { include = "prysk" },
 ]
-version = "0.18.0"
+version = "0.19.0"
 description = "Functional tests for command line applications"
 readme = "README.rst"
 license = "GNU GPLv2 or any later version"
