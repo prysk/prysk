@@ -37,7 +37,7 @@ keywords = [
     "cli",
     "functional tests",
 ]
-repository = "https://github.com/Nicoretti/prysk"
+repository = "https://github.com/prysk/prysk"
 homepage = "https://www.prysk.net/"
 include = [
     { path = ".coveragerc", format = "sdist" },
