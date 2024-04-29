@@ -10,6 +10,9 @@ Test with Windows newlines:
   # Ran 1 tests, 0 skipped, 0 failed.
 
   $ printf "  $ echo hi_from_windows\r\n  hi_from_windows\n" > windows-newlines-dos2unix.t
+  $ printf "  $ echo hi_from_windows\r\n  hi_from_windows\r\n" > windows-newlines-dos2unix.t
+  $ printf "  $ echo 'hi_from_windows\r'\n  hi_from_windows\n" > windows-newlines-dos2unix.t
+  $ printf "  $ echo 'hi_from_windows\r'\n  hi_from_windows\r\n" > windows-newlines-dos2unix.t
   $ printf "  $ echo hi_from_unix\n  hi_from_unix\n" >> windows-newlines-dos2unix.t
   $ prysk windows-newlines-dos2unix.t --dos2unix
   .
