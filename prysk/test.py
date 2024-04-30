@@ -26,38 +26,72 @@ _SKIP = 80
 _is_escaping_needed_7bit = re.compile(rb"[\x00-\x1f\x7f-\xff]").search
 
 
-def _is_escaping_needed_utf8(b):
-    try:
-        return not b.decode().isprintable()
-    except UnicodeError:
-        return _is_escaping_needed_7bit(b)
-
-
-def _escape(b, escape7bit):
-    r"""Escape bytes that need escaping and append (esc) if escaping was necessary.
+def _escape_7bit(b):
+    r"""Escape bytes that aren't printable 7-bit ASCII.
+    Append `` (esc)`` if escaping was necessary.
 
     Example usage:
 
-    >>> _escape(b'foo \\', True)
+    >>> _escape_7bit(b'foo \\')
     b'foo \\'
-    >>> _escape(b'foo \\', False)
-    b'foo \\'
-    >>> _escape(b'foo \\ \r', True)
+    >>> _escape_7bit(b'foo \\ \r')
     b'foo \\\\ \\r (esc)'
-    >>> _escape(b'foo \\ \r', False)
-    b'foo \\\\ \\r (esc)'
-    >>> _escape('☺'.encode(), True)
+    >>> _escape_7bit('☺'.encode())
     b'\\xe2\\x98\\xba (esc)'
-    >>> _escape('☺'.encode(), False)
-    b'\xe2\x98\xba'
-
-    :param escape7bit: Whether to escape all non-7-bit bytes or only
-      non-printable/invalid UTF-8
-    :type escape7bit: bool
     """
-    if _is_escaping_needed_7bit(b) if escape7bit else _is_escaping_needed_utf8(b):
+    if _is_escaping_needed_7bit(b):
         return b.decode("latin1").encode("unicode_escape") + b" (esc)"
     return b
+
+
+def _escape_utf8(b):
+    r"""Escape bytes that aren't printable UTF-8, or can't be decoded as UTF-8 at all.
+    Append `` (esc)`` if escaping was necessary.
+
+    Example usage:
+
+    >>> _escape_utf8(b'')
+    b''
+    >>> _escape_utf8(b'foo \\')
+    b'foo \\'
+    >>> _escape_utf8(b'foo \\ \r')
+    b'foo \\\\ \\r (esc)'
+    >>> _escape_utf8('☺'.encode())
+    b'\xe2\x98\xba'
+    >>> _escape_utf8('\t'.encode())
+    b'\\t (esc)'
+    >>> _escape_utf8('\240'.encode())
+    b'\\xa0 (esc)'
+    >>> _escape_utf8('☺'.encode() + b' \xff x\t \xff ' + '☺'.encode())
+    b'\xe2\x98\xba \\xff x\\t \\xff \xe2\x98\xba (esc)'
+    """
+
+    def _esc_unicode_c(c):
+        if c == "\\":
+            return b"\\\\"
+        if c.isprintable():
+            return c.encode()
+        return c.encode("unicode_escape")
+
+    ret = []
+    while b:
+        try:
+            s = b.decode()
+        except UnicodeDecodeError as e:
+            assert b == e.object
+            s = b[: e.start].decode()
+            ret.extend(_esc_unicode_c(c) for c in s)
+            ret.append(b[e.start : e.end].decode("latin1").encode("unicode_escape"))
+            b = b[e.end :]
+        else:
+            # the entire original input decoded okay and is printable, skip escaping
+            if not ret and s.isprintable():
+                return b
+
+            ret.extend(_esc_unicode_c(c) for c in s)
+            b = None
+
+    return b"".join(ret) + b" (esc)" if ret else b""
 
 
 def _findtests(paths):
@@ -246,7 +280,10 @@ def test(
             else:
                 out += b" (no-eol)"
 
-            out = _escape(out, escape7bit=escape7bit)
+            if escape7bit:
+                out = _escape_7bit(out)
+            else:
+                out = _escape_utf8(out)
 
             try:
                 tmpdir = os.environ["TMPDIR"].encode()
