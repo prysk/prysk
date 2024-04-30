@@ -54,16 +54,21 @@ Test with UTF-8 encoding:
   $ cat > bad-utf-8.t <<EOF
   >   $ printf "hola se\303\261or\n"
   >   hey
+  >   $ printf "hola \377 se\303\261or\n"
+  >   hey
   > EOF
 
   $ prysk good-utf-8.t bad-utf-8.t
   .!
   --- bad-utf-8.t
   +++ bad-utf-8.t.err
-  @@ -1,2 +1,2 @@
+  @@ -1,4 +1,4 @@
      $ printf "hola se\303\261or\n"
   -  hey
   \+  hola señor (re)
+     $ printf "hola \377 se\303\261or\n"
+  -  hey
+  \+  hola \\xff señor \(esc\) (re)
   
   # Ran 2 tests, 0 skipped, 1 failed.
   [1]
@@ -72,10 +77,13 @@ Test with UTF-8 encoding:
   .!
   --- bad-utf-8.t
   +++ bad-utf-8.t.err
-  @@ -1,2 +1,2 @@
+  @@ -1,4 +1,4 @@
      $ printf "hola se\303\261or\n"
   -  hey
   \+  hola se\\xc3\\xb1or \(esc\) (re)
+     $ printf "hola \377 se\303\261or\n"
+  -  hey
+  \+  hola \\xff se\\xc3\\xb1or \(esc\) (re)
   
   # Ran 2 tests, 0 skipped, 1 failed.
   [1]
