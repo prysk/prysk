@@ -46,6 +46,8 @@ Test with UTF-8 encoding:
 
   $ cat > good-utf-8.t <<EOF
   >   $ printf "hola se\303\261or\n"
+  >   hola señor
+  >   $ printf "hola se\303\261or\n"
   >   hola se\xc3\xb1or (esc)
   > EOF
 
@@ -55,6 +57,18 @@ Test with UTF-8 encoding:
   > EOF
 
   $ prysk good-utf-8.t bad-utf-8.t
+  .!
+  --- bad-utf-8.t
+  +++ bad-utf-8.t.err
+  @@ -1,2 +1,2 @@
+     $ printf "hola se\303\261or\n"
+  -  hey
+  \+  hola señor (re)
+  
+  # Ran 2 tests, 0 skipped, 1 failed.
+  [1]
+
+  $ prysk --escape7bit good-utf-8.t bad-utf-8.t
   .!
   --- bad-utf-8.t
   +++ bad-utf-8.t.err

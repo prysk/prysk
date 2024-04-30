@@ -22,12 +22,42 @@ from prysk.process import (
 __all__ = ["test", "testfile", "runtests"]
 
 _SKIP = 80
-_IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x1f\x7f-\xff]").search
+
+_is_escaping_needed_7bit = re.compile(rb"[\x00-\x1f\x7f-\xff]").search
 
 
-def _escape(s):
-    """Like the string-escape codec, but doesn't escape quotes"""
-    return s.decode("latin1").encode("unicode_escape") + b" (esc)"
+def _is_escaping_needed_utf8(b):
+    try:
+        return not b.decode().isprintable()
+    except UnicodeError:
+        return _is_escaping_needed_7bit(b)
+
+
+def _escape(b, escape7bit):
+    r"""Escape bytes that need escaping and append (esc) if escaping was necessary.
+
+    Example usage:
+
+    >>> _escape(b'foo \\', True)
+    b'foo \\'
+    >>> _escape(b'foo \\', False)
+    b'foo \\'
+    >>> _escape(b'foo \\ \r', True)
+    b'foo \\\\ \\r (esc)'
+    >>> _escape(b'foo \\ \r', False)
+    b'foo \\\\ \\r (esc)'
+    >>> _escape('☺'.encode(), True)
+    b'\\xe2\\x98\\xba (esc)'
+    >>> _escape('☺'.encode(), False)
+    b'\xe2\x98\xba'
+
+    :param escape7bit: Whether to escape all non-7-bit bytes or only
+      non-printable/invalid UTF-8
+    :type escape7bit: bool
+    """
+    if _is_escaping_needed_7bit(b) if escape7bit else _is_escaping_needed_utf8(b):
+        return b.decode("latin1").encode("unicode_escape") + b" (esc)"
+    return b
 
 
 def _findtests(paths):
@@ -84,6 +114,7 @@ def test(
     cleanenv=True,
     debug=False,
     dos2unix=False,
+    escape7bit=False,
 ):
     r"""Run test lines and return input, output, and diff.
 
@@ -140,7 +171,10 @@ def test(
     :param debug: Whether or not to run in debug mode (don't capture stdout)
     :type debug: bool
     :param dos2unix: Whether or not to convert all DOS/Windows line endings to UNIX
-    :type debug: bool
+    :type dos2unix: bool
+    :param escape7bit: Whether to escape all non-7-bit bytes or only
+      non-printable/invalid UTF-8
+    :type escape7bit: bool
     return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -212,8 +246,7 @@ def test(
             else:
                 out += b" (no-eol)"
 
-            if _IS_ESCAPING_NEEDED(out):
-                out = _escape(out)
+            out = _escape(out, escape7bit=escape7bit)
 
             try:
                 tmpdir = os.environ["TMPDIR"].encode()
@@ -269,6 +302,7 @@ def testfile(
     debug=False,
     testname=None,
     dos2unix=False,
+    escape7bit=False,
 ):
     """Run test at path and return input, output, and diff.
 
@@ -298,6 +332,11 @@ def testfile(
     :type debug: bool
     :param testname: Optional test file name (used in diff output)
     :type testname: bytes or None
+    :param dos2unix: Whether or not to convert all DOS/Windows line endings to UNIX
+    :type dos2unix: bool
+    :param escape7bit: Whether to escape all non-7-bit bytes or only
+      non-printable/invalid UTF-8
+    :type escape7bit: bool
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -317,11 +356,19 @@ def testfile(
             cleanenv=cleanenv,
             debug=debug,
             dos2unix=dos2unix,
+            escape7bit=escape7bit,
         )
 
 
 def runtests(
-    paths, tmpdir, shell, indent=2, cleanenv=True, debug=False, dos2unix=False
+    paths,
+    tmpdir,
+    shell,
+    indent=2,
+    cleanenv=True,
+    debug=False,
+    dos2unix=False,
+    escape7bit=False,
 ):
     """Run tests and yield results.
 
@@ -365,6 +412,7 @@ def runtests(
                     debug=debug,
                     testname=path,
                     dos2unix=dos2unix,
+                    escape7bit=escape7bit,
                 )
 
         yield path, test

@@ -197,6 +197,11 @@ class _ArgumentParser:
             action="store_true",
             help="convert DOS/Windows line endings to UNIX line endings",
         )
+        parser.add_argument(
+            "--escape7bit",
+            action="store_true",
+            help="escape all non-7-bit bytes (not just non-printable/invalid UTF-8)",
+        )
         return parser
 
     def __init__(self, *args, **kwargs):
@@ -518,6 +523,7 @@ class _Cli:
                 cleanenv=not settings.preserve_env,
                 debug=settings.debug,
                 dos2unix=settings.dos2unix,
+                escape7bit=settings.escape7bit,
             )
             if not settings.debug:
                 tests = self._runcli(
