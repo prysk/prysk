@@ -1,4 +1,5 @@
 """The command line interface implementation"""
+
 import argparse
 import configparser
 import os
@@ -22,7 +23,7 @@ from prysk.settings import (
 from prysk.test import runtests
 from prysk.xunit import runxunit
 
-VERSION = "0.19.0"
+VERSION = "0.20.0"
 
 
 class ExitCode:
