@@ -1,6 +1,10 @@
 Unreleased
 ----------
 
+Version 0.20.0 (May. 07, 2024)
+-------------------------------
+
+🚨 Attention:
 * Printable UTF-8 isn't escaped by default any more. Use :code:`--escape7bit`
   to get the old behaviour. (`#232 <https://github.com/prysk/prysk/issues/232>`_)
 
