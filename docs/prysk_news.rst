@@ -7,6 +7,7 @@ Unreleased
 Internal
 _________
 * Relock dependencies
+* Update github actions
 
 Version 0.19.0 (March. 23, 2024)
 -------------------------------
