@@ -149,6 +149,7 @@ def test(
     debug=False,
     dos2unix=False,
     escape7bit=False,
+    execute_func=False
 ):
     r"""Run test lines and return input, output, and diff.
 
@@ -209,6 +210,8 @@ def test(
     :param escape7bit: Whether to escape all non-7-bit bytes or only
       non-printable/invalid UTF-8
     :type escape7bit: bool
+    :param execute_func: Callback function to use instead of shell
+    :type exectue_func: Python function
     return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -259,9 +262,12 @@ def test(
             after.setdefault(pos, []).append(line)
     stdin.append(b"echo %s %d $?\n" % (salt, i + 1))
 
-    output, retcode = execute(
-        shell + ["-"], stdin=b"".join(stdin), stdout=PIPE, stderr=STDOUT, env=env
-    )
+    if execute_func:
+        output, retcode = execute_func(stdin)
+    else:
+        output, retcode = execute(
+            shell + ["-"], stdin=b"".join(stdin), stdout=PIPE, stderr=STDOUT, env=env
+        )
     if retcode == _SKIP:
         return refout, None, []
 
@@ -340,6 +346,7 @@ def testfile(
     testname=None,
     dos2unix=False,
     escape7bit=False,
+    execute_func=False,
 ):
     """Run test at path and return input, output, and diff.
 
@@ -374,6 +381,8 @@ def testfile(
     :param escape7bit: Whether to escape all non-7-bit bytes or only
       non-printable/invalid UTF-8
     :type escape7bit: bool
+    :param execute_func: Callback function to use instead of shell
+    :type exectue_func: Python function
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -394,6 +403,7 @@ def testfile(
             debug=debug,
             dos2unix=dos2unix,
             escape7bit=escape7bit,
+            execute_func=execute_func,
         )
 
 
@@ -406,6 +416,7 @@ def runtests(
     debug=False,
     dos2unix=False,
     escape7bit=False,
+    execute_func=False,
 ):
     """Run tests and yield results.
 
@@ -450,6 +461,7 @@ def runtests(
                     testname=path,
                     dos2unix=dos2unix,
                     escape7bit=escape7bit,
+                    execute_func=execute_func,
                 )
 
         yield path, test
