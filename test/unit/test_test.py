@@ -3,6 +3,7 @@ from pathlib import Path
 from prysk.test import (
     _findtests,
     cwd,
+    testfile
 )
 
 
@@ -53,3 +54,11 @@ def test_findtests_accepts_explicit_dirs(tmp_path):
     _ = create_file(hidden_subdir, "sub_visible.t", "")
     expected = (file,)
     assert tuple(_findtests([hidden_directory])) == expected
+
+
+def test_execute_func(tmp_path):
+    def shell_wrapper_reverse(cmd):
+        return b"ko", 0
+
+    file1 = create_file(tmp_path, "default.md", "  $ echo 'ok'\n  ko\n")
+    testfile(file1, execute_func=shell_wrapper_reverse)
