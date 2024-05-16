@@ -61,6 +61,26 @@ def glob(el, l):
     return _matchannotation(b"glob", _glob, el, l)
 
 
+def epsilon(el, l):
+    """Match numerically "close" to a line annotated with '(epsilon [value])'"""
+    m = re.fullmatch(rb"(.*) \(epsilon (.+)\)\n", el)
+    if m:
+        try:
+            epsilon = float(m.group(2))
+            a = re.split(rb'\s+', m.group(1))
+            b = re.split(rb'\s+', l[:-1])
+            if len(a) and len(b):
+                for i in range(len(a)):
+                    if a[i] == b[i]:
+                        continue
+                    if abs(float(a[i]) - float(b[i])) > epsilon:
+                        return False
+            return True
+        except:
+            return False
+    return False
+
+
 def esc(el, l):
     """Apply an escape match to a line annotated with '(esc)'"""
     ann = b" (esc)\n"
