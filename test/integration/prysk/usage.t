@@ -35,6 +35,8 @@ Usage:
     --xunit-file PATH     path to write xUnit XML output (default: None)
     --dos2unix            convert DOS/Windows line endings to UNIX line endings
                           (default: False)
+    --escape7bit          escape all non-7-bit bytes (not just non-
+                          printable/invalid UTF-8) (default: False)
 
 
 

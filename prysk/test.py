@@ -22,34 +22,76 @@ from prysk.process import (
 __all__ = ["test", "testfile", "runtests"]
 
 _SKIP = 80
-_IS_ESCAPING_NEEDED = re.compile(rb"[\x00-\x09\x0b-\x1f\x7f-\xff]").search
+
+_is_escaping_needed_7bit = re.compile(rb"[\x00-\x1f\x7f-\xff]").search
 
 
-def is_hidden(path):
-    """Check if a path (file/dir) is hidden or not."""
+def _escape_7bit(b):
+    r"""Escape bytes that aren't printable 7-bit ASCII.
+    Append `` (esc)`` if escaping was necessary.
 
-    def _is_hidden(part):
-        return (
-            part.startswith(".")
-            and not part == "."
-            and not part.startswith("..")
-            and not part.startswith("./")
-        )
+    Example usage:
 
-    return any(map(_is_hidden, path.parts))
-
-
-def is_testfile(path):
-    """Check if path is a valid prysk test file"""
-    return path.is_file() and path.suffix == ".t" and not is_hidden(path)
+    >>> _escape_7bit(b'foo \\')
+    b'foo \\'
+    >>> _escape_7bit(b'foo \\ \r')
+    b'foo \\\\ \\r (esc)'
+    >>> _escape_7bit('☺'.encode())
+    b'\\xe2\\x98\\xba (esc)'
+    """
+    if _is_escaping_needed_7bit(b):
+        return b.decode("latin1").encode("unicode_escape") + b" (esc)"
+    return b
 
 
-def _escape(s):
-    """Like the string-escape codec, but doesn't escape quotes"""
-    escape_sub = re.compile(rb"[\x00-\x09\x0b-\x1f\\\x7f-\xff]").sub
-    escape_map = dict((bytes([i]), rb"\x%02x" % i) for i in range(256))
-    escape_map.update({b"\\": b"\\\\", b"\r": rb"\r", b"\t": rb"\t"})
-    return escape_sub(lambda m: escape_map[m.group(0)], s[:-1]) + b" (esc)\n"
+def _escape_utf8(b):
+    r"""Escape bytes that aren't printable UTF-8, or can't be decoded as UTF-8 at all.
+    Append `` (esc)`` if escaping was necessary.
+
+    Example usage:
+
+    >>> _escape_utf8(b'')
+    b''
+    >>> _escape_utf8(b'foo \\')
+    b'foo \\'
+    >>> _escape_utf8(b'foo \\ \r')
+    b'foo \\\\ \\r (esc)'
+    >>> _escape_utf8('☺'.encode())
+    b'\xe2\x98\xba'
+    >>> _escape_utf8('\t'.encode())
+    b'\\t (esc)'
+    >>> _escape_utf8('\240'.encode())
+    b'\\xa0 (esc)'
+    >>> _escape_utf8('☺'.encode() + b' \xff x\t \xff ' + '☺'.encode())
+    b'\xe2\x98\xba \\xff x\\t \\xff \xe2\x98\xba (esc)'
+    """
+
+    def _esc_unicode_c(c):
+        if c == "\\":
+            return b"\\\\"
+        if c.isprintable():
+            return c.encode()
+        return c.encode("unicode_escape")
+
+    ret = []
+    while b:
+        try:
+            s = b.decode()
+        except UnicodeDecodeError as e:
+            assert b == e.object
+            s = b[: e.start].decode()
+            ret.extend(_esc_unicode_c(c) for c in s)
+            ret.append(b[e.start : e.end].decode("latin1").encode("unicode_escape"))
+            b = b[e.end :]
+        else:
+            # the entire original input decoded okay and is printable, skip escaping
+            if not ret and s.isprintable():
+                return b
+
+            ret.extend(_esc_unicode_c(c) for c in s)
+            b = None
+
+    return b"".join(ret) + b" (esc)" if ret else b""
 
 
 def _findtests(paths):
@@ -57,9 +99,13 @@ def _findtests(paths):
 
     paths = list(map(Path, paths))
 
-    def is_test_dir(path):
-        """Check if the path is a valid prysk test dir"""
-        return path.is_dir() and not is_hidden(path)
+    def is_hidden(path):
+        """Check if a path (file/dir) is hidden or not."""
+        return any(map(lambda part: part.startswith("."), path.parts))
+
+    def is_testfile(path):
+        """Check if path is a valid prysk test file"""
+        return path.suffix == ".t" and not is_hidden(path)
 
     def remove_duplicates(path):
         """Stable duplication removal"""
@@ -68,10 +114,16 @@ def _findtests(paths):
     def collect(paths):
         """Collect all test files compliant with cram collection order"""
         for path in paths:
-            if is_testfile(path):
+            if path.is_dir():
+                yield from sorted(
+                    (
+                        f
+                        for f in path.rglob("*.t")
+                        if f.is_file() and is_testfile(f.relative_to(path))
+                    )
+                )
+            else:
                 yield path
-            if is_test_dir(path):
-                yield from sorted((f for f in path.rglob("*.t") if is_testfile(f)))
 
     yield from remove_duplicates(collect(paths))
 
@@ -96,6 +148,7 @@ def test(
     cleanenv=True,
     debug=False,
     dos2unix=False,
+    escape7bit=False,
 ):
     r"""Run test lines and return input, output, and diff.
 
@@ -152,7 +205,10 @@ def test(
     :param debug: Whether or not to run in debug mode (don't capture stdout)
     :type debug: bool
     :param dos2unix: Whether or not to convert all DOS/Windows line endings to UNIX
-    :type debug: bool
+    :type dos2unix: bool
+    :param escape7bit: Whether to escape all non-7-bit bytes or only
+      non-printable/invalid UTF-8
+    :type escape7bit: bool
     return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -187,7 +243,7 @@ def test(
         # Convert Windows style line endings to UNIX
         if dos2unix and line.endswith(b"\r\n"):
             line = line[:-2] + b"\n"
-        if not line.endswith(b"\n"):
+        elif not line.endswith(b"\n"):
             line += b"\n"
         refout.append(line)
         if line.startswith(cmdline):
@@ -218,12 +274,16 @@ def test(
         if out:
             # Convert Windows style line endings to UNIX
             if dos2unix and out.endswith(b"\r\n"):
-                out = out[:-2] + b"\n"
-            if not out.endswith(b"\n"):
-                out += b" (no-eol)\n"
+                out = out[:-2]
+            elif out.endswith(b"\n"):
+                out = out[:-1]
+            else:
+                out += b" (no-eol)"
 
-            if _IS_ESCAPING_NEEDED(out):
-                out = _escape(out)
+            if escape7bit:
+                out = _escape_7bit(out)
+            else:
+                out = _escape_utf8(out)
 
             try:
                 tmpdir = os.environ["TMPDIR"].encode()
@@ -232,7 +292,7 @@ def test(
             else:
                 out = re.sub(re.escape(tmpdir), b"$TMPDIR", out)
 
-            postout.append(indent + out)
+            postout.append(indent + out + b"\n")
 
         if cmd:
             ret = int(cmd.split()[1])
@@ -279,6 +339,7 @@ def testfile(
     debug=False,
     testname=None,
     dos2unix=False,
+    escape7bit=False,
 ):
     """Run test at path and return input, output, and diff.
 
@@ -308,6 +369,11 @@ def testfile(
     :type debug: bool
     :param testname: Optional test file name (used in diff output)
     :type testname: bytes or None
+    :param dos2unix: Whether or not to convert all DOS/Windows line endings to UNIX
+    :type dos2unix: bool
+    :param escape7bit: Whether to escape all non-7-bit bytes or only
+      non-printable/invalid UTF-8
+    :type escape7bit: bool
     :return: Input, output, and diff iterables
     :rtype: (list[bytes], list[bytes], collections.Iterable[bytes])
     """
@@ -327,11 +393,19 @@ def testfile(
             cleanenv=cleanenv,
             debug=debug,
             dos2unix=dos2unix,
+            escape7bit=escape7bit,
         )
 
 
 def runtests(
-    paths, tmpdir, shell, indent=2, cleanenv=True, debug=False, dos2unix=False
+    paths,
+    tmpdir,
+    shell,
+    indent=2,
+    cleanenv=True,
+    debug=False,
+    dos2unix=False,
+    escape7bit=False,
 ):
     """Run tests and yield results.
 
@@ -375,6 +449,7 @@ def runtests(
                     debug=debug,
                     testname=path,
                     dos2unix=dos2unix,
+                    escape7bit=escape7bit,
                 )
 
         yield path, test

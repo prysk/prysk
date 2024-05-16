@@ -8,9 +8,8 @@ build-backend = "poetry.core.masonry.api"
 name = "prysk"
 packages = [
     { include = "prysk" },
-    { include = "pytest_prysk" },
 ]
-version = "0.15.2"
+version = "0.20.0"
 description = "Functional tests for command line applications"
 readme = "README.rst"
 license = "GNU GPLv2 or any later version"
@@ -38,19 +37,19 @@ keywords = [
     "cli",
     "functional tests",
 ]
-repository = "https://github.com/Nicoretti/prysk"
-homepage = "https://nicoretti.github.io/prysk/"
+repository = "https://github.com/prysk/prysk"
+homepage = "https://www.prysk.net/"
 include = [
-    ".coveragerc",
-    "noxfile.py",
-    "poetry.lock",
-    "*.rst",
-    "*.txt",
-    "*.toml",
-    "docs/*",
-    "contrib/*",
-    "scripts/*",
-    "examples/*",
+    { path = ".coveragerc", format = "sdist" },
+    { path = "noxfile.py", format = "sdist" },
+    { path = "poetry.lock", format = "sdist" },
+    { path = "*.rst", format = "sdist" },
+    { path = "*.txt", format = "sdist" },
+    { path = "*.toml", format = "sdist" },
+    { path = "docs/*", format = "sdist" },
+    { path = "contrib/*", format = "sdist" },
+    { path = "scripts/*", format = "sdist" },
+    { path = "examples/*", format = "sdist" },
 ]
 exclude = [
     "contrib/PKGBUILD",
@@ -60,20 +59,12 @@ exclude = [
 prysk = "prysk:main"
 
 [tool.poetry.dependencies]
-python = ">=3.7,<4.0.0"
+python = ">=3.8,<4.0.0"
 rich = "^13.3.1"
-
-[tool.poetry.dependencies.pytest]
-version = ">=7.0.1"
-optional = true
+pytest-prysk = { version = "^0.2.0", optional = true }
 
 [tool.poetry.extras]
-pytest-plugin = [
-    "pytest",
-]
-
-[tool.poetry.plugins.pytest11]
-prysk = "pytest_prysk"
+pytest-plugin = ["pytest-prysk"]
 
 [tool.poetry.dev-dependencies]
 tomli = "^2.0.1"

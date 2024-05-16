@@ -1,11 +1,59 @@
 Unreleased
 ----------
 
+Version 0.20.0 (May. 07, 2024)
+-------------------------------
+
+🚨 Attention:
+* Printable UTF-8 isn't escaped by default any more. Use :code:`--escape7bit`
+  to get the old behaviour. (`#232 <https://github.com/prysk/prysk/issues/232>`_)
+
+Internal
+_________
+* Relock dependencies
+* Update github actions
+
+Version 0.19.0 (March. 23, 2024)
+-------------------------------
+
+* Fix cluttering site-packages root (`#239 <https://github.com/prysk/prysk/pull/239>`_).
+
+  ❤️ Big thanks to **Haelwenn Monnier** for the PR!
+
+Internal
+_________
+* Relock dependencies
+* Fix outdated project reference
+* Update developer documentation
+
+Version 0.18.0 (Feb. 10, 2024)
+-------------------------------
+
+Internal
+_________
+* Relock dependencies
+* Fixes to prysk integration tests
+* Update contributors
+
+Version 0.17.0 (Dec. 30, 2023)
+-------------------------------
+
+* Fix prysk test file lookup for explicitly specified hidden files/directories
+    * Fixes `#224 <https://github.com/prysk/prysk/issues/224>`_
+* Update :code:`pytest-prysk` dependency requirement
+
+Version 0.16.0 (Nov. 24, 2023)
+-------------------------------
+
+* Extract pytest plugin into it's own package, for more details see `this <https://github.com/prysk/prysk/issues/190#issuecomment-1559998562>`_ comment.
+    * Fixes `#190 <https://github.com/prysk/prysk/issues/190>`_
+
 Internal
 _________
 * Fix typo in test
 * Relock dev dependencies
 * Update dependabot configuration to do group updates
+* Update contributors list
 
 
 Version 0.15.2 (Nov. 4, 2023)

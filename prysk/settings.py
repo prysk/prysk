@@ -22,6 +22,7 @@ class Settings:
     color: str = "auto"
     xunit_file: str = None
     dos2unix: bool = None
+    escape7bit: bool = None
 
 
 def settings_from(obj):

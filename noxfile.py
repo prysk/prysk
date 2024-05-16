@@ -59,9 +59,6 @@ def isort(session: Session) -> None:
 def pylint(session: Session) -> None:
     session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "prysk"}')
     session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "scripts"}')
-    session.run(
-        "poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "pytest_prysk"}'
-    )
 
 
 @nox.session(python=False)
