@@ -1,6 +1,11 @@
 Unreleased
 ----------
 
+Internal
+_________
+* Relock dependencies
+
+
 Version 0.20.0 (May. 07, 2024)
 -------------------------------
 
