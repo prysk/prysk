@@ -29,15 +29,13 @@ def clean(_: Session) -> None:
 
 @nox.session(python=False)
 def fix(session: Session) -> None:
-    session.run("poetry", "run", "python", "-m", "isort", "-v", f"{BASEPATH}")
-    session.run("poetry", "run", "python", "-m", "black", f"{BASEPATH}")
+    session.run("python", "-m", "isort", "-v", f"{BASEPATH}")
+    session.run("python", "-m", "black", f"{BASEPATH}")
 
 
 @nox.session(python=False)
 def code_format(session: Session) -> None:
     session.run(
-        "poetry",
-        "run",
         "python",
         "-m",
         "black",
@@ -51,14 +49,14 @@ def code_format(session: Session) -> None:
 @nox.session(python=False)
 def isort(session: Session) -> None:
     session.run(
-        "poetry", "run", "python", "-m", "isort", "-v", "--check", f"{BASEPATH}"
+        "python", "-m", "isort", "-v", "--check", f"{BASEPATH}"
     )
 
 
 @nox.session(python=False)
 def pylint(session: Session) -> None:
-    session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "prysk"}')
-    session.run("poetry", "run", "python", "-m", "pylint", f'{BASEPATH / "scripts"}')
+    session.run("python", "-m", "pylint", f'{BASEPATH / "prysk"}')
+    session.run("python", "-m", "pylint", f'{BASEPATH / "scripts"}')
 
 
 @nox.session(python=False)
@@ -66,8 +64,6 @@ def unit(session: Session) -> None:
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     session.run(
-        "poetry",
-        "run",
         "coverage",
         "run",
         "-a",
@@ -89,8 +85,6 @@ def integration(session: Session, shell: str) -> None:
     session.env["COVERAGE"] = "coverage"
     session.env["COVERAGE_FILE"] = f'{BASEPATH / ".coverage"}'
     session.run(
-        "poetry",
-        "run",
         "coverage",
         "run",
         "-a",
@@ -106,8 +100,6 @@ def integration(session: Session, shell: str) -> None:
 @nox.session(python=False)
 def mypy(session: Session) -> None:
     session.run(
-        "poetry",
-        "run",
         "mypy",
         "--strict",
         "--show-error-codes",
