@@ -1,4 +1,5 @@
 """Main module (invoked by "python3 -m prysk")"""
+
 import sys
 
 import prysk.cli

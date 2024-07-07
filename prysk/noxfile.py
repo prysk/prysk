@@ -48,9 +48,7 @@ def code_format(session: Session) -> None:
 
 @nox.session(python=False)
 def isort(session: Session) -> None:
-    session.run(
-        "python", "-m", "isort", "-v", "--check", f"{BASEPATH}"
-    )
+    session.run("python", "-m", "isort", "-v", "--check", f"{BASEPATH}")
 
 
 @nox.session(python=False)
