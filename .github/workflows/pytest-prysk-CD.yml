@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '**'
+
+jobs:
+
+  check-tag-version-job:
+
+    name: Check Tag Version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SCM Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/env
+
+      - name: Set up Python
+        uses: ./.github/actions/rye
+
+      - name: Install Dependencies
+        working-directory: pytest-prysk
+        run: |
+          rye sync
+
+      - name: Check Tag Version
+        working-directory: pytest-prysk
+        # make sure the pushed/created tag matched the project version
+        run: "[[ `rye version` == ${{ github.ref_name }} ]]"
+
+
+  cd-job:
+    name: Continues Delivery
+    needs: [ ci-job ]
+    runs-on: ubuntu-latest
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+
+    steps:
+
+      - name: SCM Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: ./.github/actions/rye
+
+      - name: Install Dependencies
+        working-directory: pytest-prysk
+        run: rye sync
+
+      - name: Build Artifacts
+        run: rye build
+
+      - name: PyPi Release
+        run: >
+          rye --token "${{ secrets.PYPI_TOKEN }}"
+
+      - name: GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create ${GITHUB_REF_NAME}
+          --title ${GITHUB_REF_NAME}
+          dist/*
