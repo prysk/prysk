@@ -34,6 +34,7 @@ jobs:
       - name: Verify
         working-directory: prysk
         run: |
+          rye sync
           rye run nox
 
       - name: Coveralls
