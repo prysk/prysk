@@ -53,7 +53,7 @@ def isort(session: Session) -> None:
 
 @nox.session(python=False)
 def pylint(session: Session) -> None:
-    session.run("python", "-m", "pylint", f'{BASEPATH / "prysk"}')
+    session.run("python", "-m", "pylint", f'{BASEPATH / "src"}')
     session.run("python", "-m", "pylint", f'{BASEPATH / "scripts"}')
 
 
