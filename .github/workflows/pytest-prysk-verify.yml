@@ -31,5 +31,5 @@ jobs:
         working-directory: pytest-prysk
         run: |
           rye sync
-          just test
+          rye test
 
