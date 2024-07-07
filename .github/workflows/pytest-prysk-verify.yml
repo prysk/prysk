@@ -1,0 +1,35 @@
+name: Verify
+
+on: workflow_call
+
+jobs:
+  build:
+
+    name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: ./.github/actions/rye
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Verify
+        working-directory: pytest-prysk
+        run: |
+          rye sync
+          just test
+
