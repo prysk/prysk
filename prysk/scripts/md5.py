@@ -1,4 +1,5 @@
-""" Cli tool to calculate the md5 checksum for one or multiple files """
+"""Cli tool to calculate the md5 checksum for one or multiple files"""
+
 import sys
 from argparse import (
     ArgumentParser,
