@@ -1,0 +1,9 @@
+name: CI
+
+on: [ pull_request ]
+
+jobs:
+
+  ci-job:
+    name: CI
+    uses: ./.github/workflows/prysk-verify.yml
