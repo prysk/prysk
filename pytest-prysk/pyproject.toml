@@ -33,12 +33,13 @@ dependencies = [
     "prysk>=0.15.0"
 ]
 
+[project.entry-points.pytest11]                                                         
+pytest-prysk = "pytest_prysk"
+
 [tool.rye]
 dev-dependencies = [
 ]
 
-
-[tool.entry-points.plugins-namespace]
-pytest11 = "pytest_prysk"
-
+[tool.rye.cmd]
+test = { cmd = "pytest -v" }
 
