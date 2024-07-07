@@ -1,0 +1,44 @@
+[project]
+name = "pytest-prysk"
+version = "0.3.0"
+description = "Pytest plugin for prysk"
+authors = [ {name = "Nicola Coretti", email= "nico.coretti@gmail.com"}]
+readme = "README.md"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Unix Shell",
+    "Topic :: Software Development :: Testing",
+    "Framework :: Pytest",
+]
+
+keywords = [
+    "snapshot testing",
+    "functional-tests",
+    "testing",
+    "pytest",
+    "plugin",
+]
+
+requires-python = ">=3.8"
+dependencies = [
+    "pytest>=7.3.2",
+    "prysk>=0.15.0"
+]
+
+[tool.rye]
+dev-dependencies = [
+]
+
+
+[tool.entry-points.plugins-namespace]
+pytest11 = "pytest_prysk"
+
+
