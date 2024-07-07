@@ -1,0 +1,16 @@
+name: Prysk PR-Merge
+
+on: 
+  push:
+    branches:
+      - 'master'
+    paths:                                                                     
+       - '/*'         # Trigger on changes in the root directory
+       - 'prysk/**'   # Trigger on changes in the prysk directory and its subdirectories
+
+jobs:
+
+  ci-job:
+    name: Verify
+    uses: ./.github/workflows/prysk-verify.yml
+

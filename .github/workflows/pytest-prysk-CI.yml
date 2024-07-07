@@ -3,8 +3,8 @@ name: Pytest-Prysk-CI
 on: 
   pull_request:
     paths:                                                                     
-       - '/*'         # Trigger on changes in the root directory                  
-       - 'pytest-prysk/**'   # Trigger on changes in the prysk directory and its subdirectories                                                            
+       - '/*'               # Trigger on changes in the root directory                  
+       - 'pytest-prysk/**'  # Trigger on changes in the prysk directory and its subdirectories
 
 jobs:
 

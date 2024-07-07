@@ -3,8 +3,8 @@ name: Prysk-CI
 on: 
   pull_request:
     paths:                                                                     
-       - '/*'         # Trigger on changes in the root directory                  
-       - 'prysk/**'   # Trigger on changes in the prysk directory and its subdirectories                                                            
+       - '/*'         # Trigger on changes in the root directory
+       - 'prysk/**'   # Trigger on changes in the prysk directory and its subdirectories
 
 jobs:
 
