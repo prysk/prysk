@@ -1,0 +1,50 @@
+name: Setup rye
+description: GitHub Action for setting up rye
+
+inputs:
+  python-version:
+    required: true
+    description: python version
+    default: '3.12'
+  rye-version:
+    required: true
+    description: rye version
+    default: '0.35.0'
+  use-uv:
+    required: false
+    description: use uv for dependency resolution
+    default: 'false'
+
+runs:
+  using: "composite"
+  steps:
+
+  - name: Setup Python (${{ inputs.python-version}})
+    uses: actions/setup-python@v4
+    with:
+      python-version: ${{ inputs.python-version }}
+
+  - name: Install rye
+    shell: bash
+    env:
+      RYE_INSTALL_OPTION: '--yes'
+      RYE_VERSION: ${{ inputs.rye-version }}
+    run: |
+      curl -sSf https://rye.astral.sh/get | bash
+
+  - name: Setup Paths
+    shell: bash
+    run: |
+      echo "$HOME/.rye/shims" >> $GITHUB_PATH
+
+  - name: Fetch Python Version
+    shell: bash
+    run: |
+      rye pin ${{ inputs.python-version }}
+      rye fetch
+
+  - name: Configure uv
+    shell: bash
+    if: ${{ inputs.use-uv == 'true' }}
+    run: rye config --set-bool behavior.use-uv=true
+
