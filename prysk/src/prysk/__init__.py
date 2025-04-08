@@ -1,5 +1,4 @@
 """Functional testing framework for command line applications"""
-
 import sys
 
 import prysk.cli
