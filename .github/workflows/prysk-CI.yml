@@ -1,14 +1,9 @@
 name: CI
 
-on: 
-  pull_request:
-    paths:                                                                     
-       - '/*'         # Trigger on changes in the root directory                  
-       - 'prysk/**'   # Trigger on changes in the prysk directory and its subdirectories                                                            
+on: [ pull_request ]
 
 jobs:
 
   ci-job:
     name: CI
     uses: ./.github/workflows/prysk-verify.yml
-

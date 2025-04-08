@@ -5,9 +5,6 @@ on:
       - master
     tags:
       - "**"
-    paths:                                                                     
-       - '/*'         # Trigger on changes in the root directory                  
-       - 'prysk/**'   # Trigger on changes in the prysk directory and its subdirectories                                                            
   workflow_call:
 
 jobs:
