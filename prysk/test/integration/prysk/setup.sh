@@ -16,7 +16,7 @@ if [ -n "$COVERAGE" ]; then
   fi
 
   alias prysk="`which "$COVERAGE"` run -a --rcfile=${PROJECT_ROOT}/pyproject.toml \
-${PROJECT_ROOT}/src/prysk --shell=$TESTSHELL"
+${PROJECT_ROOT}/prysk --shell=$TESTSHELL"
   alias md5="$PYTHON ${PROJECT_ROOT}/scripts/md5.py"
 else
   PYTHON="`command -v "$PYTHON" || echo "$PYTHON"`"
