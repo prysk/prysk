@@ -35,7 +35,7 @@ jobs:
 
   cd-job:
     name: Continues Delivery
-    needs: [ check-tag-version-job ]
+    needs: [ ci-job ]
     runs-on: ubuntu-latest
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
@@ -54,19 +54,16 @@ jobs:
         run: rye sync
 
       - name: Build Artifacts
-        working-directory: pytest-prysk
         run: rye build
 
       - name: PyPi Release
-        working-directory: pytest-prysk
-        run: rye --token "${{ secrets.PYPI_TOKEN }}"
+        run: >
+          rye --token "${{ secrets.PYPI_TOKEN }}"
 
       - name: GitHub Release
-        working-directory: pytest-prysk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
           gh release create ${GITHUB_REF_NAME}
           --title ${GITHUB_REF_NAME}
-          --notes-file doc/changes/changes_${GITHUB_REF_NAME}.md
           dist/*
