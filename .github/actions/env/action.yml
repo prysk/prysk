@@ -1,0 +1,36 @@
+name: 'SDE'
+description: 'Setup development environment'
+
+inputs:
+
+  python-version:
+    description: 'Python version to use'
+    required: true
+    default: 3.8
+
+  poetry-version:
+    description: 'Poetry version to use'
+    required: true
+    default: 1.5.1
+
+runs:
+
+  using: "composite"
+  steps:
+
+    - name: Setup Python (${{ inputs.python-version}})
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Setup Poetry (${{ inputs.poetry-version }})
+      uses: abatilo/actions-poetry@v2
+      with:
+        poetry-version: ${{ inputs.poetry-version }}
+
+    - name: Poetry install
+      run: poetry install
+      shell: bash
+
+    - name: Setup task runner
+      uses: extractions/setup-just@v1

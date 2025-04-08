@@ -1,4 +1,4 @@
-name: Release
+name: Relase
 
 on:
   push:
@@ -23,19 +23,19 @@ jobs:
         uses: ./.github/actions/rye
 
       - name: Install Dependencies
-        working-directory: prysk
+        working-directory: pytest-prysk
         run: |
           rye sync
 
       - name: Check Tag Version
-        working-directory: prysk
+        working-directory: pytest-prysk
         # make sure the pushed/created tag matched the project version
         run: "[[ `rye version` == ${{ github.ref_name }} ]]"
 
 
   cd-job:
     name: Continues Delivery
-    needs: [ check-tag-version-job ]
+    needs: [ ci-job ]
     runs-on: ubuntu-latest
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
@@ -50,22 +50,21 @@ jobs:
         uses: ./.github/actions/rye
 
       - name: Install Dependencies
-        working-directory: prysk
-        run: rye sync
+        working-directory: pytest-prysk
+        run: |
+          rye sync
 
       - name: Build Artifacts
-        working-directory: prysk
         run: rye build
 
-      - name: PyPi Release
-        working-directory: prysk
-        run: rye --token "${{ secrets.PYPI_TOKEN }}"
+      - name: Publish package to PyPi
+        uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: GitHub Release
-        working-directory: prysk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
           gh release create ${GITHUB_REF_NAME}
           --title ${GITHUB_REF_NAME}
+          --notes-file doc/changes/changes_${GITHUB_REF_NAME}.md
           dist/*
