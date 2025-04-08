@@ -4,7 +4,7 @@
 # last locked with the following flags:
 #   pre: false
 #   features: []
-#   all-features: true
+#   all-features: false
 #   with-sources: false
 #   generate-hashes: false
 
