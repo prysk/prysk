@@ -32,9 +32,8 @@ jobs:
           sudo apt-get install -u zsh
 
       - name: Verify
-        working-directory: prysk
         run: |
-          rye run nox
+          poetry run python -m nox
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
