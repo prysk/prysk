@@ -9,19 +9,31 @@
 #   generate-hashes: false
 
 -e file:.
+argcomplete==3.4.0
+    # via nox
+colorlog==6.8.2
+    # via nox
+distlib==0.3.8
+    # via virtualenv
 exceptiongroup==1.2.1
     # via pytest
+filelock==3.15.4
+    # via virtualenv
 iniconfig==2.0.0
     # via pytest
 markdown-it-py==3.0.0
     # via rich
 mdurl==0.1.2
     # via markdown-it-py
+nox==2024.4.15
 packaging==24.1
+    # via nox
     # via pytest
+platformdirs==4.2.2
+    # via virtualenv
 pluggy==1.5.0
     # via pytest
-prysk==0.19.0
+prysk==0.20.0
     # via pytest-prysk
 pygments==2.18.0
     # via rich
@@ -30,6 +42,9 @@ pytest==8.2.2
 rich==13.7.1
     # via prysk
 tomli==2.0.1
+    # via nox
     # via pytest
 typing-extensions==4.12.2
     # via rich
+virtualenv==20.26.3
+    # via nox

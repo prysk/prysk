@@ -1,0 +1,5 @@
+test:
+    rye run pytest -v
+
+build:
+    rye build
