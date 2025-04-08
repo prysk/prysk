@@ -1,5 +1,5 @@
 test:
-    rye run pytest -v
+    poetry run pytest -v
 
 build:
-    rye build
+    poetry build
