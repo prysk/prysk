@@ -11,6 +11,7 @@ from prysk.diff import (
     esc,
     glob,
     regex,
+    epsilon,
     unified_diff,
 )
 from prysk.process import (
@@ -310,7 +311,7 @@ def test(
         diff_path = error_path = b""
 
     diff = unified_diff(
-        refout, postout, diff_path, error_path, matchers=[esc, glob, regex]
+        refout, postout, diff_path, error_path, matchers=[esc, glob, regex, epsilon]
     )
     for line in diff:
         return refout, postout, itertools.chain([line], diff)
