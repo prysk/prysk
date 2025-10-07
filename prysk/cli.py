@@ -492,7 +492,7 @@ class _Cli:
             return ExitCode.ERROR
         shell = [shellcmd]
         if settings.shell_opts:
-            shell += shlex.split(settings.shell_opts)
+            shell += settings.shell_opts
 
         patchcmd = None
         if settings.interactive:

@@ -1,4 +1,5 @@
 import argparse
+import shlex
 from dataclasses import (
     dataclass,
     field,
@@ -23,6 +24,12 @@ class Settings:
     xunit_file: str = None
     dos2unix: bool = None
     escape7bit: bool = None
+
+    def __post_init__(self):
+        if isinstance(self.shell_opts, str):
+            self.shell_opts = shlex.split(self.shell_opts)
+        elif self.shell_opts is None:
+            self.shell_opts = []
 
 
 def settings_from(obj):
@@ -51,7 +58,7 @@ def settings_from(obj):
 def merge_settings(lhs, rhs):
     def items(d):
         d = vars(d)
-        excludes = ["tests"]
+        excludes = ["tests", "shell_opts"]
         return ((k, v) for k, v in d.items() if k not in excludes)
 
     lhs_items = dict(items(lhs))
