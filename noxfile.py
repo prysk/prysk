@@ -83,7 +83,7 @@ def unit(session: Session) -> None:
 
 
 @nox.session(python=False)
-@nox.parametrize("shell", ["dash", "bash", "zsh"])
+@nox.parametrize("shell", ["dash", "bash", "zsh", "mksh"])
 def integration(session: Session, shell: str) -> None:
     session.env["TESTOPTS"] = f"--shell={shell}"
     session.env["COVERAGE"] = "coverage"
