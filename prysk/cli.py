@@ -14,6 +14,7 @@ from pathlib import Path
 from shutil import which
 
 from rich.console import Console
+from rich.syntax import Syntax
 
 from prysk.process import execute
 from prysk.settings import (
@@ -350,24 +351,10 @@ class _Cli:
                         origdiff = diff
                         diff = []
                         for line in origdiff:
-                            _line = line.decode("utf-8")
-                            _line = (
-                                f"[green]{_line}[/green]"
-                                if _line.startswith("+")
-                                else _line
-                            )
-                            _line = (
-                                f"[red]{_line}[/red]"
-                                if _line.startswith("-")
-                                else _line
-                            )
-                            _line = (
-                                f"[magenta]{_line}[/magenta]"
-                                if _line.startswith("@")
-                                else _line
-                            )
-                            self.stdout(_line, end="")
                             diff.append(line)
+
+                        lines = (line.decode() for line in diff)
+                        self.stdout(Syntax("".join(lines).strip(), "diff"), end="")
 
                         if (
                             patchcmd
