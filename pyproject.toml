@@ -59,7 +59,7 @@ exclude = [
 prysk = "prysk:main"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0.0"
+python = ">=3.10,<4.0.0"
 rich = "^13.3.1"
 pytest-prysk = { version = "^0.2.0", optional = true }
 
